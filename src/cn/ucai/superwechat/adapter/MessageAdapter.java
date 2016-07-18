@@ -69,7 +69,7 @@ import com.easemob.chat.VideoMessageBody;
 import com.easemob.chat.VoiceMessageBody;
 import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.activity.AlertDialog;
 import cn.ucai.superwechat.activity.BaiduMapActivity;
 import cn.ucai.superwechat.activity.ChatActivity;

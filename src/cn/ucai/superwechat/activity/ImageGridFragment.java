@@ -30,8 +30,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.easemob.chatuidemo.BuildConfig;
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.BuildConfig;
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.domain.VideoEntity;
 import cn.ucai.superwechat.video.util.ImageCache;
 import cn.ucai.superwechat.video.util.ImageResizer;

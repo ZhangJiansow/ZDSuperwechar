@@ -30,7 +30,8 @@ import android.widget.ProgressBar;
 
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
-import com.easemob.chatuidemo.R;
+
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.task.LoadLocalBigImgTask;
 import cn.ucai.superwechat.utils.ImageCache;
 import cn.ucai.superwechat.widget.photoview.PhotoView;

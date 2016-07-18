@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
 
 /**
  * 开屏页

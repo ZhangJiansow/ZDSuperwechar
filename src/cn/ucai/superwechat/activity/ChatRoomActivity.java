@@ -30,7 +30,8 @@ import android.widget.ListView;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMChatRoom;
-import com.easemob.chatuidemo.R;
+
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.adapter.ChatRoomAdapter;
 
 public class ChatRoomActivity extends BaseActivity {

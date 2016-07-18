@@ -38,8 +38,9 @@ import android.widget.Toast;
 import com.easemob.chat.EMCursorResult;
 import com.easemob.chat.EMGroupInfo;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
 import com.easemob.exceptions.EaseMobException;
+
+import cn.ucai.superwechat.R;
 
 public class PublicGroupsActivity extends BaseActivity {
 	private ProgressBar pb;

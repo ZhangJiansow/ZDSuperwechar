@@ -37,11 +37,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMCallStateChangeListener;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMVideoCallHelper;
-import com.easemob.chatuidemo.R;
 import cn.ucai.superwechat.utils.CameraHelper;
 import com.easemob.exceptions.EMServiceNotReadyException;
 

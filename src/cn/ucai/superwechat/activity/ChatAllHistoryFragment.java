@@ -39,7 +39,7 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMConversation.EMConversationType;
 import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.DemoApplication;
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.adapter.ChatAllHistoryAdapter;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 

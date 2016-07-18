@@ -41,7 +41,6 @@ import com.easemob.chat.EMChatOptions;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.EMMessage.Type;
-import com.easemob.chatuidemo.R;
 
 import cn.ucai.superwechat.activity.ChatActivity;
 import cn.ucai.superwechat.activity.MainActivity;

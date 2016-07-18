@@ -51,7 +51,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.video.util.Utils;
 import com.easemob.util.EMLog;

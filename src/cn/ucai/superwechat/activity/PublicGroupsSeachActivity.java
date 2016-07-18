@@ -13,8 +13,9 @@ import android.widget.Toast;
 import com.easemob.EMError;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
 import com.easemob.exceptions.EaseMobException;
+
+import cn.ucai.superwechat.R;
 
 public class PublicGroupsSeachActivity extends BaseActivity{
     private RelativeLayout containerLayout;

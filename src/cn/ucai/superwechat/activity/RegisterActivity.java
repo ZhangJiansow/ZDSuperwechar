@@ -23,7 +23,8 @@ import android.widget.Toast;
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import cn.ucai.superwechat.DemoApplication;
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
+
 import com.easemob.exceptions.EaseMobException;
 
 /**

@@ -30,7 +30,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import cn.ucai.superwechat.Constant;
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.domain.User;
 import cn.ucai.superwechat.utils.UserUtils;
 

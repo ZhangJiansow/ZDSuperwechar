@@ -20,7 +20,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.utils.ImageCache;
 import cn.ucai.superwechat.widget.photoview.PhotoView;
 import com.easemob.util.ImageUtils;

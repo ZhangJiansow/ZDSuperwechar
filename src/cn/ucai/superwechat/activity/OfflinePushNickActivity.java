@@ -1,7 +1,6 @@
 package cn.ucai.superwechat.activity;
 
 import com.easemob.chat.EMChatManager;
-import com.easemob.chatuidemo.R;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -14,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import cn.ucai.superwechat.R;
 
 public class OfflinePushNickActivity extends BaseActivity {
 

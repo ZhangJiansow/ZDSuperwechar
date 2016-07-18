@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
 import com.easemob.exceptions.EaseMobException;
 
 import android.content.Context;
@@ -20,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+
+import cn.ucai.superwechat.R;
 
 public class GroupBlacklistActivity extends BaseActivity {
 	private ListView listView;

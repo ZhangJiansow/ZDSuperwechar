@@ -24,7 +24,8 @@ import android.net.NetworkInfo;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
 import cn.ucai.superwechat.Constant;
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
+
 import com.easemob.util.EMLog;
 
 public class CommonUtils {

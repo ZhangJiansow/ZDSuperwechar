@@ -25,7 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.task.DownloadImageTask;
 import cn.ucai.superwechat.utils.ImageCache;
 import com.easemob.util.ImageUtils;

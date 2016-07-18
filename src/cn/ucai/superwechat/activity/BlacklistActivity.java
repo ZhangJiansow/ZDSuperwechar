@@ -19,8 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easemob.chat.EMContactManager;
-import com.easemob.chatuidemo.R;
 import com.easemob.exceptions.EaseMobException;
+
+import cn.ucai.superwechat.R;
 
 /**
  * 黑名单列表页面
@@ -33,7 +34,7 @@ public class BlacklistActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_black_list);
+		setContentView( R.layout.activity_black_list);
 
 		listView = (ListView) findViewById(R.id.list);
 

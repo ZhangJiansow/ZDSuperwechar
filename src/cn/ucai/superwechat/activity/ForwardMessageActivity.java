@@ -16,7 +16,7 @@ package cn.ucai.superwechat.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.easemob.chatuidemo.R;
+import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.domain.User;
 
 public class ForwardMessageActivity extends PickContactNoCheckboxActivity {
