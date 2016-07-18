@@ -9,11 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1" >
-
-        <ImageView
+        <TextView
+            android:gravity="center"
+            android:text="超级微信"
+            android:textColor="#000"
+            android:drawableLeft="@drawable/mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
             android:src="@drawable/welcom_logo" />
     </RelativeLayout>
@@ -123,7 +125,16 @@
                 android:text="@string/login"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
+
         </LinearLayout>
+        <TextView
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设置服务器的IP地址"/>
     </RelativeLayout>
 
 </LinearLayout>
