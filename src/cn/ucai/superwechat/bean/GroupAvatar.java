@@ -1,6 +1,8 @@
 package cn.ucai.superwechat.bean;
 
-public class GroupAvatar {
+import java.io.Serializable;
+
+public class GroupAvatar implements Serializable{
 	private Integer mavatarId;
 	private String mavatarUserName;
 	private String mavatarPath;

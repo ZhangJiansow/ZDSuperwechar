@@ -1,6 +1,8 @@
 package cn.ucai.superwechat.bean;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable {
 	private int retCode = -1;
 	private boolean retMsg;
 	private Object retData;
