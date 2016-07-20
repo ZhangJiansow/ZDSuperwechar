@@ -201,6 +201,7 @@ public class RegisterActivity extends BaseActivity {
 						}
 					});
 				} catch (final EaseMobException e) {
+					onRegisterAppServer();
 					runOnUiThread(new Runnable() {
 						public void run() {
 							if (!RegisterActivity.this.isFinishing())
@@ -223,6 +224,25 @@ public class RegisterActivity extends BaseActivity {
 			}
 		}).start();
 	}
+
+	private void onRegisterAppServer() {
+		final OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
+		utils.setRequestUrl(I.REQUEST_UNREGISTER)
+				.addParam(I.User.USER_NAME,username)
+				.targetClass(Result.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						Log.e(TAG, "result=" + result);
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.e(TAG, "error=" + error);
+					}
+				});
+	}
+
 	public void back(View view) {
 		finish();
 	}
