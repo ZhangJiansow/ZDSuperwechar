@@ -107,6 +107,7 @@ public class OkHttpUtils2<T> {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case RESULT_SUCCESS:
+
                         T obj = (T) msg.obj;//获得解析的结果
                         if(mListener!=null) {
                             mListener.onSuccess(obj);//回调解析成功的代码
