@@ -66,8 +66,8 @@ public class SplashActivity extends BaseActivity {
 					if (user != null) {
 						SuperWeChatApplication.getInstance().setUser(user);
 						SuperWeChatApplication.currentUserNick = user.getMUserNick();
-						new DownContactListTask(username,SplashActivity.this).execute();
 					}
+					new DownContactListTask(username,SplashActivity.this).execute();
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
 					if (sleepTime - costTime > 0) {
