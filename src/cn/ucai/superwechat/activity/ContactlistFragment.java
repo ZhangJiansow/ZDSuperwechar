@@ -101,7 +101,7 @@ public class ContactlistFragment extends Fragment {
                                 refresh();
 		                    }else{
 		                        String s1 = getResources().getString(R.string.get_failed_please_check);
-		                        Toast.makeText(getActivity(), s1, 1).show();
+		                        Toast.makeText(getActivity(), s1, Toast.LENGTH_LONG).show();
 		                        progressBar.setVisibility(View.GONE);
 		                    }
 		                }
@@ -273,7 +273,7 @@ public class ContactlistFragment extends Fragment {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		if (((AdapterContextMenuInfo) menuInfo).position > 3) {
+		if (((AdapterContextMenuInfo) menuInfo).position > 1) {
 		    toBeProcessUser = adapter.getItem(((AdapterContextMenuInfo) menuInfo).position);
 		    toBeProcessUsername = toBeProcessUser.getUsername();
 			getActivity().getMenuInflater().inflate(R.menu.context_contact_list, menu);
@@ -320,7 +320,7 @@ public class ContactlistFragment extends Fragment {
 	/**
 	 * 删除联系人
 	 * 
-	 * @param toDeleteUser
+	 * @param
 	 */
 	public void deleteContact(final User tobeDeleteUser) {
 		String st1 = getResources().getString(R.string.deleting);
@@ -349,7 +349,7 @@ public class ContactlistFragment extends Fragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(getActivity(), st2 + e.getMessage(), 1).show();
+							Toast.makeText(getActivity(), st2 + e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
 
@@ -379,7 +379,7 @@ public class ContactlistFragment extends Fragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(getActivity(), st2, 0).show();
+							Toast.makeText(getActivity(), st2, Toast.LENGTH_LONG).show();
 							refresh();
 						}
 					});
@@ -388,7 +388,7 @@ public class ContactlistFragment extends Fragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(getActivity(), st3, 0).show();
+							Toast.makeText(getActivity(), st3, Toast.LENGTH_LONG).show();
 						}
 					});
 				}
@@ -469,8 +469,8 @@ public class ContactlistFragment extends Fragment {
 			contactList.add(0, users.get(Constant.CHAT_ROBOT));
 		}
 		// 加入"群聊"和"聊天室"
-        if(users.get(Constant.CHAT_ROOM) != null)
-            contactList.add(0, users.get(Constant.CHAT_ROOM));
+        /*if(users.get(Constant.CHAT_ROOM) != null)
+            contactList.add(0, users.get(Constant.CHAT_ROOM));*/
         if(users.get(Constant.GROUP_USERNAME) != null)
             contactList.add(0, users.get(Constant.GROUP_USERNAME));
         

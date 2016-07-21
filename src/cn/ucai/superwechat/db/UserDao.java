@@ -116,4 +116,8 @@ public class UserDao {
 	public void saveUserAvatar(UserAvatar user) {
 		DemoDBManager.getInstance().saveUserAvatar(user);
 	}
+
+	public UserAvatar getUserAvatar(String username) {
+		return DemoDBManager.getInstance().getUserAvatar(username);
+	}
 }

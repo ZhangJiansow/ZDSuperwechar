@@ -18,6 +18,9 @@ import android.content.Context;
 
 import com.easemob.EMCallBack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.ucai.superwechat.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -111,6 +114,16 @@ public class SuperWeChatApplication extends Application {
 	}
 
 	private UserAvatar user;
+
+	public List<UserAvatar> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(List<UserAvatar> userList) {
+		this.userList = userList;
+	}
+
+	private List<UserAvatar> userList;
 
 	public UserAvatar getUser() {
 		return user;
