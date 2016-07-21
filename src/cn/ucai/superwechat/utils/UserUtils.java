@@ -65,7 +65,7 @@ public class UserUtils {
     }
 
 	/**
-	 * 设置用户头像
+	 * 设置用户好友的头像
 	 * @param username
 	 */
 	public static void setAppUserAvatar(Context context, String username, ImageView imageView){

@@ -122,7 +122,7 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 			holder.nameTextview.setText(user.getNick());
 			holder.avatar.setImageResource(R.drawable.groups_icon);
 		}else{
-		    holder.nameTextview.setText(user.getNick());
+		    //holder.nameTextview.setText(user.getNick());
 			UserUtils.setAppUserNick(username, holder.nameTextview);
 			//设置用户头像
 			UserUtils.setAppUserAvatar(getContext(), username, holder.avatar);
@@ -198,6 +198,7 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 			}
 			EMLog.d(TAG, "contacts original size: " + mOriginalList.size());
 			EMLog.d(TAG, "contacts copy size: " + copyUserList.size());
+			Log.e(TAG, "prefix" + prefix);
 			
 			if(prefix==null || prefix.length()==0){
 				results.values = copyUserList;
@@ -213,6 +214,7 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 					if(username.startsWith(prefixString)){
 						if (!username.equals(Constant.GROUP_USERNAME)&&!username.equals(Constant.NEW_FRIENDS_USERNAME)) {
 							newValues.add(user);
+							Log.e(TAG, "newValues.add(user)" + newValues.add(user));
 						}
 					}
 					else{
