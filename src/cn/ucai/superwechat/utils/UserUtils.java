@@ -1,6 +1,7 @@
 package cn.ucai.superwechat.utils;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
@@ -43,7 +44,7 @@ public class UserUtils {
 	 * @param username
 	 * @return
 	 */
-	public static UserAvatar getAppUserInfo(String username){
+	public static  UserAvatar getAppUserInfo(String username){
 		UserAvatar user = SuperWeChatApplication.getInstance().getUserMap().get(username);
 		if(user == null){
 			user = new UserAvatar(username);

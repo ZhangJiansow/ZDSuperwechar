@@ -131,6 +131,7 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 		}
 		
 		return convertView;
+
 	}
 	
 	@Override
@@ -214,7 +215,6 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 					if(username.startsWith(prefixString)){
 						if (!username.equals(Constant.GROUP_USERNAME)&&!username.equals(Constant.NEW_FRIENDS_USERNAME)) {
 							newValues.add(user);
-							Log.e(TAG, "newValues.add(user)" + newValues.add(user));
 						}
 					}
 					else{
