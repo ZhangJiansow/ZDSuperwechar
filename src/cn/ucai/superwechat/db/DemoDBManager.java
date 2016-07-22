@@ -358,12 +358,13 @@ public class DemoDBManager {
         values.put(UserDao.USER_COLUMN_NAME_ID, user.getMUserName());
         values.put(UserDao.USER_COLUMN_NAME_NICK, user.getMUserNick());
         values.put(UserDao.USER_COLUMN_NAME_AVATAR, user.getMAvatarId());
-        values.put(UserDao.USER_COLUMN_AVATAR_PATH, user.getMAvatarPath());
         values.put(UserDao.USER_COLUMN_AVATAR_TYPE, user.getMAvatarType());
+        values.put(UserDao.USER_COLUMN_AVATAR_PATH, user.getMAvatarPath());
         values.put(UserDao.USER_COLUMN_AVATAR_LAST_UPDATE_TIME, user.getMAvatarLastUpdateTime());
         if(db.isOpen()){
             db.replace(UserDao.USER_TABLE_NAME, null, values);
         }
+        Log.e(TAG, "user=" + user);
     }
 
     synchronized public UserAvatar getUserAvatar(String username) {

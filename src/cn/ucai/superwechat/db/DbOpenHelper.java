@@ -46,8 +46,8 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 			+ UserDao.USER_COLUMN_NAME_ID + " TEXT PRIMARY KEY, "
 			+ UserDao.USER_COLUMN_NAME_NICK + " TEXT, "
 			+ UserDao.USER_COLUMN_NAME_AVATAR + " INTEGER, "
-			+ UserDao.USER_COLUMN_AVATAR_PATH + " TEXT, "
 			+ UserDao.USER_COLUMN_AVATAR_TYPE + " INTEGER, "
+			+ UserDao.USER_COLUMN_AVATAR_PATH + " TEXT, "
 			+ UserDao.USER_COLUMN_AVATAR_LAST_UPDATE_TIME + " TEXT); ";
 
 	private static final String ROBOT_TABLE_CREATE = "CREATE TABLE "
