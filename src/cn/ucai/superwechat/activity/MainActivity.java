@@ -45,7 +45,9 @@ import com.easemob.EMGroupChangeListener;
 import com.easemob.EMNotifierEvent;
 import com.easemob.EMValueCallBack;
 
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactListener;
@@ -60,12 +62,18 @@ import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.TextMessageBody;
 import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.DemoHXSDKHelper;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.bean.UserAvatar;
+import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.InviteMessage;
 import cn.ucai.superwechat.domain.InviteMessage.InviteMesageStatus;
 import cn.ucai.superwechat.domain.User;
 import cn.ucai.superwechat.utils.CommonUtils;
+import cn.ucai.superwechat.utils.UserUtils;
+import cn.ucai.superwechat.utils.Utils;
+
 import com.easemob.util.EMLog;
 import com.easemob.util.HanziToPinyin;
 import com.easemob.util.NetUtils;
@@ -515,19 +523,57 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	public class MyContactListener implements EMContactListener {
 
 		@Override
-		public void onContactAdded(List<String> usernameList) {			
+		public void onContactAdded(List<String> usernameList) {
+			Log.e(TAG, "onContactAdded,usernameList=" + usernameList);
 			// 保存增加的联系人
 			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
 			Map<String, User> toAddUsers = new HashMap<String, User>();
+			final Map<String, UserAvatar> userMap = SuperWeChatApplication.getInstance().getUserMap();
+			List<String> toAddUserName = new ArrayList<String>();
 			for (String username : usernameList) {
+				Log.e(TAG, "onContactAdded,username=" + username);
 				User user = setUserHead(username);
 				// 添加好友时可能会回调added方法两次
 				if (!localUsers.containsKey(username)) {
 					userDao.saveContact(user);
 				}
 				toAddUsers.put(username, user);
+				if (!localUsers.containsKey(username)) {
+					toAddUserName.add(username);
+				}
 			}
 			localUsers.putAll(toAddUsers);
+			for (String name : toAddUserName) {
+				final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+				utils.setRequestUrl(I.REQUEST_ADD_CONTACT)
+						.addParam(I.Contact.USER_NAME, SuperWeChatApplication.getInstance().getUserName())
+						.addParam(I.Contact.CU_NAME, name)
+						.targetClass(String.class)
+						.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+							@Override
+							public void onSuccess(String s) {
+								Log.e(TAG, "s=" + s);
+								Result result = Utils.getResultFromJson(s, UserAvatar.class);
+								Log.e(TAG, "result=" + result);
+								if (result != null && result.isRetMsg()) {
+									UserAvatar user = (UserAvatar) result.getRetData();
+									Log.e(TAG, "user=" + user);
+									if (user != null) {
+										if (!SuperWeChatApplication.getInstance().getUserMap().containsKey(user.getMUserName())) {
+											SuperWeChatApplication.getInstance().getUserMap().put(user.getMUserName(), user);
+											SuperWeChatApplication.getInstance().getUserList().add(user);
+											sendStickyBroadcast(new Intent("update_contact_list"));
+										}
+									}
+								}
+							}
+
+							@Override
+							public void onError(String error) {
+								Log.e(TAG, "error=" + error);
+							}
+						});
+			}
 			// 刷新ui
 			if (currentTabIndex == 1)
 				contactListFragment.refresh();
@@ -536,9 +582,11 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 		@Override
 		public void onContactDeleted(final List<String> usernameList) {
+			Log.e(TAG, "onContactDeleted,usernameList=" + usernameList);
 			// 被删除
 			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
 			for (String username : usernameList) {
+				Log.e(TAG, "onContactDeleted,username=" + username);
 				localUsers.remove(username);
 				userDao.deleteContact(username);
 				inviteMessgeDao.deleteMessage(username);
@@ -549,7 +597,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 					String st10 = getResources().getString(R.string.have_you_removed);
 					if (ChatActivity.activityInstance != null
 							&& usernameList.contains(ChatActivity.activityInstance.getToChatUsername())) {
-						Toast.makeText(MainActivity.this, ChatActivity.activityInstance.getToChatUsername() + st10, 1)
+						Toast.makeText(MainActivity.this, ChatActivity.activityInstance.getToChatUsername() + st10, Toast.LENGTH_LONG)
 								.show();
 						ChatActivity.activityInstance.finish();
 					}
