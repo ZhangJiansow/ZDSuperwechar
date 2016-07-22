@@ -108,7 +108,7 @@ import com.easemob.util.VoiceRecorder;
 
 /**
  * 聊天页面
- * 
+ *
  */
 public class ChatActivity extends BaseActivity implements OnClickListener, EMEventListener{
 	private static final String TAG = "ChatActivity";
@@ -203,7 +203,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	public EMGroup group;
 	public EMChatRoom room;
 	public boolean isRobot;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -344,7 +344,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	                                                 swipeRefreshLayout.setRefreshing(false);
 	                                                 return;
 		                                         }
-		                                         
+
 		                                         if (messages.size() > 0) {
 	                                                 adapter.notifyDataSetChanged();
 	                                                 adapter.refreshSeekTo(messages.size() - 1);
@@ -354,7 +354,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		                                         } else {
 		                                             haveMoreData = false;
 		                                         }
-		                                         
+
 		                                         isloading = false;
 
 		                                 }else{
@@ -403,17 +403,17 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 			if(chatType == CHATTYPE_GROUP){
 			    onGroupViewCreation();
-			}else{ 
+			}else{
 			    onChatRoomViewCreation();
 			}
 		}
-        
+
 		// for chatroom type, we only init conversation and create view adapter on success
 		if(chatType != CHATTYPE_CHATROOM){
 		    onConversationInit();
-	        
+
 	        onListViewCreation();
-	        
+
 	        // show forward message if the message is not null
 	        String forward_msg_id = getIntent().getStringExtra("forward_msg_id");
 	        if (forward_msg_id != null) {
@@ -431,7 +431,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	    }else if(chatType == CHATTYPE_CHATROOM){
 	        conversation = EMChatManager.getInstance().getConversationByType(toChatUsername,EMConversationType.ChatRoom);
 	    }
-	     
+
         // 把此会话的未读数置为0
         conversation.markAllMessagesAsRead();
 
@@ -450,7 +450,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
                 conversation.loadMoreGroupMsgFromDB(msgId, pagesize);
             }
         }
-        
+
         EMChatManager.getInstance().addChatRoomChangeListener(new EMChatRoomChangeListener(){
 
             @Override
@@ -461,13 +461,13 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
             }
 
             @Override
-            public void onMemberJoined(String roomId, String participant) {                
+            public void onMemberJoined(String roomId, String participant) {
             }
 
             @Override
             public void onMemberExited(String roomId, String roomName,
                     String participant) {
-                
+
             }
 
             @Override
@@ -481,15 +481,15 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
                     }
                 }
             }
-            
+
         });
 	}
-	
+
 	protected void onListViewCreation(){
         adapter = new MessageAdapter(ChatActivity.this, toChatUsername, chatType);
         // 显示消息
         listView.setAdapter(adapter);
-        
+
         listView.setOnScrollListener(new ListScrollListener());
         adapter.refreshSelectLast();
 
@@ -507,26 +507,26 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
             }
         });
 	}
-	
+
 	protected void onGroupViewCreation(){
 	    group = EMGroupManager.getInstance().getGroup(toChatUsername);
-        
+
         if (group != null){
             ((TextView) findViewById(R.id.name)).setText(group.getGroupName());
         }else{
             ((TextView) findViewById(R.id.name)).setText(toChatUsername);
         }
-        
+
         // 监听当前会话的群聊解散被T事件
         groupListener = new GroupListener();
         EMGroupManager.getInstance().addGroupChangeListener(groupListener);
 	}
-	
+
 	protected void onChatRoomViewCreation(){
-        
+
         final ProgressDialog pd = ProgressDialog.show(this, "", "Joining......");
         EMChatManager.getInstance().joinChatRoom(toChatUsername, new EMValueCallBack<EMChatRoom>() {
-        
+
         @Override
         public void onSuccess(EMChatRoom value) {
             // TODO Auto-generated method stub
@@ -541,14 +541,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
                             ((TextView) findViewById(R.id.name)).setText(toChatUsername);
                         }
                         EMLog.d(TAG, "join room success : " + room.getName());
-                        
+
                         onConversationInit();
-                        
+
                         onListViewCreation();
                    }
                });
         }
-        
+
         @Override
         public void onError(final int error, String errorMsg) {
                 // TODO Auto-generated method stub
@@ -563,7 +563,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
             }
         });
 	}
-	
+
 	/**
 	 * onActivityResult
 	 */
@@ -593,7 +593,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 				Intent intent = new Intent(this, ForwardMessageActivity.class);
 				intent.putExtra("forward_msg_id", forwardMsg.getMsgId());
 				startActivity(intent);
-				
+
 				break;
 
 			default:
@@ -702,7 +702,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 消息图标点击事件
-	 * 
+	 *
 	 * @param view
 	 */
 	@Override
@@ -761,7 +761,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 事件监听
-	 * 
+	 *
 	 * see {@link EMNotifierEvent}
      */
     @Override
@@ -771,7 +771,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         {
             //获取到message
             EMMessage message = (EMMessage) event.getData();
-            
+
             String username = null;
             //群组消息
             if(message.getChatType() == ChatType.GroupChat || message.getChatType() == ChatType.ChatRoom){
@@ -810,7 +810,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         }
         case EventOfflineMessage:
         {
-            //a list of offline messages 
+            //a list of offline messages
             //List<EMMessage> offlineMessages = (List<EMMessage>) event.getData();
             refreshUI();
             break;
@@ -818,15 +818,15 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         default:
             break;
         }
-        
+
     }
-	
-	
+
+
 	private void refreshUIWithNewMessage(){
 	    if(adapter == null){
 	        return;
 	    }
-	    
+
 	    runOnUiThread(new Runnable() {
             public void run() {
                 adapter.refreshSelectLast();
@@ -838,7 +838,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	    if(adapter == null){
             return;
         }
-	    
+
 		runOnUiThread(new Runnable() {
 			public void run() {
 				adapter.refresh();
@@ -897,7 +897,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 发送文本消息
-	 * 
+	 *
 	 * @param content
 	 *            message content
 	 * @param isResend
@@ -934,7 +934,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 发送语音
-	 * 
+	 *
 	 * @param filePath
 	 * @param fileName
 	 * @param length
@@ -971,7 +971,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 发送图片
-	 * 
+	 *
 	 * @param filePath
 	 */
 	private void sendPicture(final String filePath) {
@@ -1036,7 +1036,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 根据图库图片uri发送图片
-	 * 
+	 *
 	 * @param selectedImage
 	 */
 	private void sendPicByUri(Uri selectedImage) {
@@ -1073,7 +1073,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 发送位置信息
-	 * 
+	 *
 	 * @param latitude
 	 * @param longitude
 	 * @param imagePath
@@ -1102,7 +1102,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 发送文件
-	 * 
+	 *
 	 * @param uri
 	 */
 	private void sendFile(Uri uri) {
@@ -1171,7 +1171,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 显示语音图标按钮
-	 * 
+	 *
 	 * @param view
 	 */
 	public void setModeVoice(View view) {
@@ -1192,7 +1192,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 显示键盘图标
-	 * 
+	 *
 	 * @param view
 	 */
 	public void setModeKeyboard(View view) {
@@ -1225,7 +1225,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 点击清空聊天记录
-	 * 
+	 *
 	 * @param view
 	 */
 	public void emptyHistory(View view) {
@@ -1236,7 +1236,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 点击进入群组详情
-	 * 
+	 *
 	 * @param view
 	 */
 	public void toGroupDetails(View view) {
@@ -1255,7 +1255,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 显示或隐藏图标按钮页
-	 * 
+	 *
 	 * @param view
 	 */
 	public void toggleMore(View view) {
@@ -1281,7 +1281,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 点击文字输入框
-	 * 
+	 *
 	 * @param v
 	 */
 	public void editClick(View v) {
@@ -1300,7 +1300,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 按住说话listener
-	 * 
+	 *
 	 */
 	class PressToSpeakListen implements View.OnTouchListener {
 		@Override
@@ -1386,7 +1386,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 获取表情的gridview的子view
-	 * 
+	 *
 	 * @param i
 	 * @return
 	 */
@@ -1415,7 +1415,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 						if (filename != "delete_expression") { // 不是删除键，显示表情
 							// 这里用的反射，所以混淆的时候不要混淆SmileUtils这个类
-							Class clz = Class.forName("SmileUtils");
+							Class clz = Class.forName("cn.ucai.superwechat.utils.SmileUtils");
 							Field field = clz.getField(filename);
 							mEditTextContent.append(SmileUtils.getSmiledText(ChatActivity.this,
 									(String) field.get(null)));
@@ -1502,7 +1502,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 		// 把此activity 从foreground activity 列表里移除
 		sdkHelper.popActivity(this);
-		
+
 		super.onStop();
 	}
 
@@ -1538,7 +1538,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 加入到黑名单
-	 * 
+	 *
 	 * @param username
 	 */
 	private void addUserToBlacklist(final String username) {
@@ -1571,7 +1571,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 返回
-	 * 
+	 *
 	 * @param view
 	 */
 	public void back(View view) {
@@ -1601,7 +1601,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * listview滑动监听listener
-	 * 
+	 *
 	 */
 	private class ListScrollListener implements OnScrollListener {
 
@@ -1612,7 +1612,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 				/*if (view.getFirstVisiblePosition() == 0 && !isloading && haveMoreData && conversation.getAllMessages().size() != 0) {
 					isloading = true;
 					loadmorePB.setVisibility(View.VISIBLE);
-					// sdk初始化加载的聊天记录为20条，到顶时去db里获取更多					
+					// sdk初始化加载的聊天记录为20条，到顶时去db里获取更多
 					List<EMMessage> messages;
 					EMMessage firstMsg = conversation.getAllMessages().get(0);
 					try {
@@ -1635,7 +1635,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 						if (messages.size() > 0) {
 							adapter.refreshSeekTo(messages.size() - 1);
 						}
-						
+
 						if (messages.size() != pagesize)
 							haveMoreData = false;
 					} else {
@@ -1671,7 +1671,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	/**
 	 * 转发消息
-	 * 
+	 *
 	 * @param forward_msg_id
 	 */
 	protected void forwardMessage(String forward_msg_id) {
@@ -1698,15 +1698,15 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		default:
 			break;
 		}
-		
+
 		if(forward_msg.getChatType() == EMMessage.ChatType.ChatRoom){
 			EMChatManager.getInstance().leaveChatRoom(forward_msg.getTo());
 		}
 	}
-	
+
 	/**
 	 * 监测群组解散或者被T事件
-	 * 
+	 *
 	 */
 	class GroupListener extends GroupRemoveListener {
 
