@@ -5,6 +5,7 @@ import android.nfc.Tag;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import cn.ucai.superwechat.I;
@@ -36,6 +37,7 @@ public class UserUtils {
 			if(TextUtils.isEmpty(user.getNick()))
 				user.setNick(username);
 		}
+
 		return user;
 	}
 
@@ -51,8 +53,8 @@ public class UserUtils {
 		}
 		return user;
 	}
-    
-    /**
+
+	/**
      * 设置用户头像
      * @param username
      */
@@ -96,6 +98,7 @@ public class UserUtils {
      */
 	public static void setCurrentUserAvatar(Context context, ImageView imageView) {
 		User user = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().getCurrentUserInfo();
+		Log.e(TAG, "user=" + user);
 		if (user != null && user.getAvatar() != null) {
 			Picasso.with(context).load(user.getAvatar()).placeholder(R.drawable.default_avatar).into(imageView);
 		} else {
@@ -136,11 +139,24 @@ public class UserUtils {
      */
     public static void setCurrentUserNick(TextView textView){
     	User user = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().getCurrentUserInfo();
+		Log.e(TAG, "user=" + user);
     	if(textView != null){
     		textView.setText(user.getNick());
     	}
     }
-    
+
+	/**
+	 * 设置当前用户昵称
+	 */
+	public static void setAppCurrentUserNick(TextView textView){
+		UserAvatar user = SuperWeChatApplication.getInstance().getUser();
+		if (textView != null && user != null) {
+			textView.setText(user.getMUserNick());
+		} else {
+			textView.setText(user.getMUserName());
+		}
+	}
+
     /**
      * 保存或更新某个用户
      * @param
