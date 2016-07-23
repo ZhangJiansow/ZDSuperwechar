@@ -36,8 +36,10 @@ public class DownContactListTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String s) {
+
                         Log.e(TAG, "s" + s);
                         Result result = Utils.getListResultFromJson(s, UserAvatar.class);
+
                         List<UserAvatar> list = (List<UserAvatar>) result.getRetData();
                         if ((list != null) && (list.size() > 0)) {
                             SuperWeChatApplication.getInstance().setUserList(list);

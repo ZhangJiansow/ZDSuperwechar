@@ -225,7 +225,6 @@ public class LoginActivity extends BaseActivity {
 		SuperWeChatApplication.getInstance().setPassword(currentPassword);
 		SuperWeChatApplication.getInstance().setUser(user);
 		SuperWeChatApplication.currentUserNick = user.getMUserNick();
-
 		new DownContactListTask(currentUsername,LoginActivity.this).execute();
 		try {
 			// ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
