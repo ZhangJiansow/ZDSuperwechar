@@ -1,6 +1,7 @@
 package cn.ucai.superwechat.activity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -36,6 +37,7 @@ import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.User;
+import cn.ucai.superwechat.listener.OnSetAvatarListener;
 import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
 
@@ -52,8 +54,9 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	private TextView tvUsername;
 	private ProgressDialog dialog;
 	private RelativeLayout rlNickName;
-	
-	
+
+	private OnSetAvatarListener mOnSetAvatarListener;
+	private String avatarName;
 	
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -101,7 +104,9 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.user_head_avatar:
-			uploadHeadPhoto();
+//			uploadHeadPhoto();
+			mOnSetAvatarListener = new OnSetAvatarListener(UserProfileActivity.this, R.id.layout_upload_avatar,
+					getAvatarName(), I.AVATAR_TYPE_USER_PATH);
 			break;
 		case R.id.rl_nickname:
 			final EditText editText = new EditText(this);
@@ -254,6 +259,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.e(TAG, "requestCode=" + requestCode);
 		switch (requestCode) {
 		case REQUESTCODE_PICK:
 			if (data == null || data.getData() == null) {
@@ -270,6 +276,44 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode != RESULT_OK) {
+			return;
+		}
+		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
+		if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
+			Log.e(TAG, "upload avatar to app server...");
+			uploadUserAvatar();
+		}
+	}
+
+	private void uploadUserAvatar() {
+		File file = new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this,
+				I.AVATAR_TYPE_USER_PATH), avatarName + I.AVATAR_SUFFIX_JPG);
+		String username = SuperWeChatApplication.getInstance().getUserName();
+		final OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
+		utils.setRequestUrl(I.REQUEST_UPLOAD_AVATAR)
+				.addParam(I.NAME_OR_HXID,username)
+				.addParam(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
+				.targetClass(Result.class)
+				.addFile(file)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						Log.e(TAG, "result=" + result);
+						if (result.isRetMsg()) {
+							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
+									Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_fail),
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
 	}
 
 	public void startPhotoZoom(Uri uri) {
@@ -334,5 +378,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
 		return baos.toByteArray();
+	}
+
+	public String getAvatarName() {
+		avatarName = String.valueOf(System.currentTimeMillis());
+		return avatarName;
 	}
 }
