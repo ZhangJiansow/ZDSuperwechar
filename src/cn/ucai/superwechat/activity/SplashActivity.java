@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,11 +14,16 @@ import android.widget.TextView;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.DemoHXSDKHelper;
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatApplication;
+import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
+import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.task.DownContactListTask;
+import cn.ucai.superwechat.utils.UserUtils;
+import cn.ucai.superwechat.utils.Utils;
 
 /**
  * 开屏页
@@ -27,7 +33,7 @@ public class SplashActivity extends BaseActivity {
 	private static final String TAG = SplashActivity.class.getSimpleName();
 	private RelativeLayout rootLayout;
 	private TextView versionText;
-	
+
 	private static final int sleepTime = 2000;
 
 	@Override
@@ -61,9 +67,30 @@ public class SplashActivity extends BaseActivity {
 					Log.e(TAG, "username=" + username);
 					UserDao dao = new UserDao(SplashActivity.this);
 					Log.e(TAG, "dao=" + dao);
-					UserAvatar user = dao.getUserAvatar(username);
+					final UserAvatar user = dao.getUserAvatar(username);
 					Log.e(TAG, "user=" + user);
-					if (user != null) {
+					if (user == null) {
+						final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+						utils.setRequestUrl(I.REQUEST_FIND_USER)
+								.addParam(I.User.USER_NAME, username)
+								.targetClass(String.class)
+								.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+									@Override
+									public void onSuccess(String s) {
+										Log.e(TAG, "s=" + s);
+										Result result = Utils.getResultFromJson(s, UserAvatar.class);
+										Log.e(TAG, "result=" + result);
+										if (user != null) {
+											SuperWeChatApplication.getInstance().setUser(user);
+											SuperWeChatApplication.currentUserNick = user.getMUserNick();
+										}
+									}
+									@Override
+									public void onError(String error) {
+										Log.e(TAG, "error=" + error);
+									}
+								});
+					} else {
 						SuperWeChatApplication.getInstance().setUser(user);
 						SuperWeChatApplication.currentUserNick = user.getMUserNick();
 					}
@@ -92,7 +119,7 @@ public class SplashActivity extends BaseActivity {
 		}).start();
 
 	}
-	
+
 	/**
 	 * 获取当前应用程序的版本号
 	 */
