@@ -385,4 +385,14 @@ public class DemoDBManager {
         }
         return user;
     }
+
+    synchronized public void updateUserNick(UserAvatar user) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(UserDao.USER_COLUMN_NAME_NICK, user.getMUserNick());
+        if (db.isOpen()) {
+            db.update(UserDao.USER_TABLE_NAME, values, UserDao.USER_COLUMN_NAME_ID + " = ?",
+                    new String[]{user.getMUserName()});
+        }
+    }
 }
