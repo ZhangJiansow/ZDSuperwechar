@@ -347,13 +347,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			headAvatar.setImageDrawable(drawable);
 			uploadUserAvatar(Bitmap2Bytes(photo));
 		}
-
 	}
 	
 	private void uploadUserAvatar(final byte[] data) {
 //		dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				final String avatarUrl = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().uploadUserAvatar(data);
@@ -369,10 +367,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_fail),
 									Toast.LENGTH_SHORT).show();
 						}
-
 					}
 				});
-
 			}
 		}).start();
 

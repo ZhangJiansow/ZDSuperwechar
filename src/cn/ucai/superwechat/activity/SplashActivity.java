@@ -22,6 +22,7 @@ import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.task.DownContactListTask;
+import cn.ucai.superwechat.task.DownGroupListTask;
 import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
 
@@ -95,6 +96,7 @@ public class SplashActivity extends BaseActivity {
 						SuperWeChatApplication.currentUserNick = user.getMUserNick();
 					}
 					new DownContactListTask(username,SplashActivity.this).execute();
+					new DownGroupListTask(username,SplashActivity.this).execute();
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
 					if (sleepTime - costTime > 0) {
