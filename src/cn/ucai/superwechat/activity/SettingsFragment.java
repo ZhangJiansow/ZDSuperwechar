@@ -237,7 +237,6 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 		}
 	}
 
-	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -376,18 +375,15 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 			public void onProgress(int progress, String status) {
 				
 			}
-			
+
 			@Override
 			public void onError(int code, String message) {
 				getActivity().runOnUiThread(new Runnable() {
-					
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
 						pd.dismiss();
 						Toast.makeText(getActivity(), "unbind devicetokens failed", Toast.LENGTH_SHORT).show();
-						
-						
 					}
 				});
 			}

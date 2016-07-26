@@ -83,6 +83,30 @@ public class UserUtils {
 			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
 		}
 	}
+	/**
+	 * 设置群组的头像
+	 * @param hxid
+	 */
+	public static void setAppGroupAvatar(Context context, String hxid, ImageView imageView){
+		String path = "";
+		if(path != null && hxid != null){
+			path = getGroupAvatarPath(hxid);
+			Log.e(TAG, "path=" + path);
+			Picasso.with(context).load(path).placeholder(R.drawable.group_icon).into(imageView);
+		}else{
+			Picasso.with(context).load(R.drawable.group_icon).into(imageView);
+		}
+	}
+	public static String getGroupAvatarPath(String hxid) {
+		StringBuilder path = new StringBuilder(I.SERVER_URL);
+		path.append(I.QUESTION).append(I.KEY_REQUEST)
+				.append(I.EQU).append(I.REQUEST_DOWNLOAD_AVATAR)
+				.append(I.AND)
+				.append(I.NAME_OR_HXID).append(I.EQU).append(hxid)
+				.append(I.AND)
+				.append(I.AVATAR_TYPE).append(I.EQU).append(I.AVATAR_TYPE_GROUP_PATH);
+		return path.toString();
+	}
 
 	public static String getUserAvatarPath(String username) {
 		StringBuilder path = new StringBuilder(I.SERVER_URL);

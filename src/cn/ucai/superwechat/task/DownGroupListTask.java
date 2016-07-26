@@ -39,8 +39,10 @@ public class DownGroupListTask {
                     public void onSuccess(String s) {
                         Log.e(TAG, "s" + s);
                         Result result = Utils.getListResultFromJson(s, UserAvatar.class);
+                        Log.e(TAG, "result=" + result);
                         List<GroupAvatar> list = (List<GroupAvatar>) result.getRetData();
                         if ((list != null) && (list.size() > 0)) {
+                            Log.e(TAG, "list.size=" + list.size());
                             SuperWeChatApplication.getInstance().setGroupList(list);
                             mContext.sendStickyBroadcast(new Intent("update_contact_list"));
                         }
