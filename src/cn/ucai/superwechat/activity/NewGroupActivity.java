@@ -31,9 +31,16 @@ import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 
+import java.io.File;
+
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatApplication;
+import cn.ucai.superwechat.bean.GroupAvatar;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.listener.OnSetAvatarListener;
+import cn.ucai.superwechat.utils.Utils;
 
 public class NewGroupActivity extends BaseActivity {
 	private final static String TAG = NewGroupActivity.class.getCanonicalName();
@@ -103,60 +110,105 @@ public class NewGroupActivity extends BaseActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		String st1 = getResources().getString(R.string.Is_to_create_a_group_chat);
-		final String st2 = getResources().getString(R.string.Failed_to_create_groups);
-		Log.e(TAG, "requestCode=" + requestCode);
 		if (resultCode != RESULT_OK) {
 			return;
 		}
-		mOnSetAvatarListener.setAvatar(requestCode, data, avatar);
-		if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
-//			createAppGroup;
-		}
-		if (requestCode == CREATE_GROUP) {
-			//新建群组
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setMessage(st1);
-			progressDialog.setCanceledOnTouchOutside(false);
-			progressDialog.show();
 
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					// 调用sdk创建群组方法
-					String groupName = groupNameEditText.getText().toString().trim();
-					String desc = introductionEditText.getText().toString();
-					String[] members = data.getStringArrayExtra("newmembers");
-					EMGroup group;
-					try {
-						if (checkBox.isChecked()) {
-							//创建公开群，此种方式创建的群，可以自由加入
-							//创建公开群，此种方式创建的群，用户需要申请，等群主同意后才能加入此群
-							group = EMGroupManager.getInstance().createPublicGroup(groupName, desc, members, true, 200);
-						} else {
-							//创建不公开群
-							group = EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, memberCheckbox.isChecked(), 200);
+		Log.e(TAG, "requestCode=" + requestCode);
+		mOnSetAvatarListener.setAvatar(requestCode, data, avatar);
+
+		if (requestCode == CREATE_GROUP) {
+			createEMGroup(data);
+		}
+	}
+
+	String st2;
+	private void createEMGroup(final Intent data) {
+		setProgressDialog();
+		st2 = getResources().getString(R.string.Failed_to_create_groups);
+		//新建群组
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// 调用sdk创建群组方法
+				String groupName = groupNameEditText.getText().toString().trim();
+				String desc = introductionEditText.getText().toString();
+				String[] members = data.getStringArrayExtra("newmembers");
+				EMGroup group;
+				try {
+					if (checkBox.isChecked()) {
+						//创建公开群，此种方式创建的群，可以自由加入
+						//创建公开群，此种方式创建的群，用户需要申请，等群主同意后才能加入此群
+						group = EMGroupManager.getInstance().createPublicGroup(groupName, desc, members, true, 200);
+					} else {
+						//创建不公开群
+						group = EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, memberCheckbox.isChecked(), 200);
+					}
+					Log.e(TAG, "hxid=" + group.getGroupId());
+					createAppGroup(group.getGroupId(),groupName,desc,members);
+
+				} catch (final EaseMobException e) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							progressDialog.dismiss();
+							Toast.makeText(NewGroupActivity.this, st2 + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
 						}
-						Log.e(TAG, "hxid=" + group.getGroupId());
-						runOnUiThread(new Runnable() {
-							public void run() {
-								progressDialog.dismiss();
-								setResult(RESULT_OK);
-								finish();
-							}
-						});
-					} catch (final EaseMobException e) {
-						runOnUiThread(new Runnable() {
-							public void run() {
-								progressDialog.dismiss();
-								Toast.makeText(NewGroupActivity.this, st2 + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-							}
-						});
+					});
+				}
+
+			}
+		}).start();
+	}
+
+	private void createAppGroup(String groupId, String groupName, String desc, String[] members) {
+		boolean isPublic = checkBox.isChecked();
+		boolean invites = !isPublic;
+		File file = new File(OnSetAvatarListener.getAvatarPath(NewGroupActivity.this, I.AVATAR_TYPE_GROUP_PATH),
+				avatarName + I.AVATAR_SUFFIX_JPG);
+		String own = SuperWeChatApplication.getInstance().getUserName();
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_CREATE_GROUP)
+				.addParam(I.Group.HX_ID,groupId)
+				.addParam(I.Group.NAME,groupName)
+				.addParam(I.Group.OWNER,own)
+				.addParam(I.Group.DESCRIPTION,desc)
+				.addParam(I.Group.IS_PUBLIC,String.valueOf(isPublic))
+				.addParam(I.Group.ALLOW_INVITES,String.valueOf(invites))
+				.targetClass(String.class)
+				.addFile(file)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Log.e(TAG, "s=" + s);
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						Log.e(TAG, "result=" + result);
+						if (result != null && result.isRetMsg()) {
+							runOnUiThread(new Runnable() {
+								public void run() {
+									progressDialog.dismiss();
+									setResult(RESULT_OK);
+									finish();
+								}
+							});
+						}
 					}
 
-				}
-			}).start();
-		}
+					@Override
+					public void onError(String error) {
+						Log.e(TAG, "error=" + error);
+						progressDialog.show();
+						Toast.makeText(NewGroupActivity.this, st2 + error, Toast.LENGTH_LONG).show();
+					}
+				});
+
+	}
+
+	private void setProgressDialog() {
+		String st1 = getResources().getString(R.string.Is_to_create_a_group_chat);
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setMessage(st1);
+		progressDialog.setCanceledOnTouchOutside(false);
+		progressDialog.show();
 	}
 
 	public void back(View view) {
