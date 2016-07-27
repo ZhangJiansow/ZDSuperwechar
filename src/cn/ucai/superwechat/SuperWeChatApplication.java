@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ucai.superwechat.bean.GroupAvatar;
+import cn.ucai.superwechat.bean.MemberUserAvatar;
 import cn.ucai.superwechat.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -117,9 +118,18 @@ public class SuperWeChatApplication extends Application {
 	}
 
 	private UserAvatar user;
-	private List<UserAvatar> userList = new ArrayList<>();
-	private Map<String, UserAvatar> userMap = new HashMap<>();
+	private List<UserAvatar> userList = new ArrayList<UserAvatar>();
+	private Map<String, UserAvatar> userMap = new HashMap<String, UserAvatar>();
 	private List<GroupAvatar> groupList = new ArrayList<GroupAvatar>();
+	private Map<String, HashMap<String, MemberUserAvatar>> memberMap = new HashMap<String, HashMap<String, MemberUserAvatar>>();
+
+	public Map<String, HashMap<String, MemberUserAvatar>> getMemberMap() {
+		return memberMap;
+	}
+
+	public void setMemberMap(Map<String, HashMap<String, MemberUserAvatar>> memberMap) {
+		this.memberMap = memberMap;
+	}
 
 	public List<GroupAvatar> getGroupList() {
 		return groupList;
