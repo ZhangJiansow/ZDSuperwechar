@@ -18,8 +18,10 @@ import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +52,7 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.bean.GroupAvatar;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.OkHttpUtils2;
+import cn.ucai.superwechat.task.DownMemberMapTask;
 import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
 import cn.ucai.superwechat.widget.ExpandGridView;
@@ -187,7 +190,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		clearAllHistory.setOnClickListener(this);
 		blacklistLayout.setOnClickListener(this);
 		changeGroupNameLayout.setOnClickListener(this);
-
+		setUpdateMemberListener();
 	}
 
 	@Override
@@ -464,6 +467,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						GroupAvatar groupAvatar = (GroupAvatar) result.getRetData();
 						Log.e(TAG, "result=" + result);
 						if (result != null && result.isRetMsg()) {
+							new DownMemberMapTask(groupId, getApplicationContext()).execute();
 							runOnUiThread(new Runnable() {
 								public void run() {
 									progressDialog.dismiss();
@@ -849,6 +853,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	protected void onDestroy() {
 		super.onDestroy();
 		instance = null;
+		if (mReceiver != null) {
+			unregisterReceiver(mReceiver);
+		}
 	}
 	
 	private static class ViewHolder{
@@ -857,4 +864,19 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	    ImageView badgeDeleteView;
 	}
 
+	class UpdateMemberReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			refreshMembers();
+		}
+	}
+
+	UpdateMemberReceiver mReceiver;
+
+	private void setUpdateMemberListener() {
+		mReceiver = new UpdateMemberReceiver();
+		IntentFilter filter = new IntentFilter("update_member_list");
+		registerReceiver(mReceiver, filter);
+	}
 }
