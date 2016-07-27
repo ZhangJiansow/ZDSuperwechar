@@ -112,8 +112,4 @@ public class AlertDialog extends BaseActivity {
 		return true;
 	}
 
-	 
-
-	
-
 }

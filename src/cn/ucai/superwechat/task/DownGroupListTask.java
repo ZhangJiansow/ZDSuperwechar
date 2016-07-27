@@ -10,6 +10,7 @@ import java.util.Map;
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.bean.GroupAvatar;
+import cn.ucai.superwechat.bean.MemberUserAvatar;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.data.OkHttpUtils2;
@@ -38,12 +39,15 @@ public class DownGroupListTask {
                     @Override
                     public void onSuccess(String s) {
                         Log.e(TAG, "s" + s);
-                        Result result = Utils.getListResultFromJson(s, UserAvatar.class);
+                        Result result = Utils.getListResultFromJson(s, GroupAvatar.class);
                         Log.e(TAG, "result=" + result);
                         List<GroupAvatar> list = (List<GroupAvatar>) result.getRetData();
                         if ((list != null) && (list.size() > 0)) {
                             Log.e(TAG, "list.size=" + list.size());
                             SuperWeChatApplication.getInstance().setGroupList(list);
+                            for (GroupAvatar g : list) {
+                                SuperWeChatApplication.getInstance().getGroupMap().put(g.getMGroupHxid(), g);
+                            }
                             mContext.sendStickyBroadcast(new Intent("update_contact_list"));
                         }
                     }

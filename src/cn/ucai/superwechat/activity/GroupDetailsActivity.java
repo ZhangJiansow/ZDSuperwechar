@@ -49,6 +49,7 @@ import com.easemob.chat.EMGroupManager;
 
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.bean.GroupAvatar;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.OkHttpUtils2;
@@ -762,8 +763,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 							}
 						}).start();
+						deleteMemversFromAppGroup(username);
+
 					}
+
+
 				});
+
 
 				button.setOnLongClickListener(new OnLongClickListener() {
 
@@ -790,6 +796,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			return super.getCount() + 2;
 		}
 	}
+
+
 
 	protected void updateGroup() {
 		new Thread(new Runnable() {
@@ -878,5 +886,36 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		mReceiver = new UpdateMemberReceiver();
 		IntentFilter filter = new IntentFilter("update_member_list");
 		registerReceiver(mReceiver, filter);
+	}
+
+	public void deleteMemversFromAppGroup(final String username) {
+		Log.e(TAG, "deleteMemversFromAppGroup=" + username);
+		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		if (groupAvatar != null) {
+			final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+			utils.setRequestUrl(I.REQUEST_DELETE_GROUP_MEMBER)
+					.addParam(I.Member.GROUP_ID, String.valueOf(groupAvatar.getMGroupId()))
+					.addParam(I.Member.USER_NAME,username)
+					.targetClass(String.class)
+					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+						@Override
+						public void onSuccess(String s) {
+							Log.e(TAG, "s=" + s);
+							Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+							if (result != null && result.isRetMsg()) {
+								SuperWeChatApplication.getInstance().getMemberMap().get(groupId).remove(username);
+								Log.e(TAG, "delete member success!!!!!!!!!!!!!!!!!!!!!!!!!!");
+							}
+						}
+
+						@Override
+						public void onError(String error) {
+							Log.e(TAG, "error=" + error);
+						}
+					});
+		} else {
+			finish();
+			return;
+		}
 	}
 }

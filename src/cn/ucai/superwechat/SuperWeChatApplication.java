@@ -122,6 +122,15 @@ public class SuperWeChatApplication extends Application {
 	private Map<String, UserAvatar> userMap = new HashMap<String, UserAvatar>();
 	private List<GroupAvatar> groupList = new ArrayList<GroupAvatar>();
 	private Map<String, HashMap<String, MemberUserAvatar>> memberMap = new HashMap<String, HashMap<String, MemberUserAvatar>>();
+	private Map<String, GroupAvatar> groupMap = new HashMap<String, GroupAvatar>();
+
+	public Map<String, GroupAvatar> getGroupMap() {
+		return groupMap;
+	}
+
+	public void setGroupMap(Map<String, GroupAvatar> groupMap) {
+		this.groupMap = groupMap;
+	}
 
 	public Map<String, HashMap<String, MemberUserAvatar>> getMemberMap() {
 		return memberMap;
