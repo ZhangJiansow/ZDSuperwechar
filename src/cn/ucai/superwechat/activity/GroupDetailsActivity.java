@@ -374,6 +374,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			}
 		}).start();
+		deleteMemversFromAppGroup(SuperWeChatApplication.getInstance().getUserName(),true);
 	}
 
 	/**
@@ -763,7 +764,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 							}
 						}).start();
-						deleteMemversFromAppGroup(username);
+						deleteMemversFromAppGroup(username,false);
 
 					}
 
@@ -888,7 +889,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		registerReceiver(mReceiver, filter);
 	}
 
-	public void deleteMemversFromAppGroup(final String username) {
+	public void deleteMemversFromAppGroup(final String username, final boolean isExit) {
 		Log.e(TAG, "deleteMemversFromAppGroup=" + username);
 		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
 		if (groupAvatar != null) {
@@ -903,7 +904,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							Log.e(TAG, "s=" + s);
 							Result result = Utils.getResultFromJson(s, GroupAvatar.class);
 							if (result != null && result.isRetMsg()) {
-								SuperWeChatApplication.getInstance().getMemberMap().get(groupId).remove(username);
+								if (isExit) {
+									GroupAvatar group = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+									SuperWeChatApplication.getInstance().getGroupList().remove(group);
+									SuperWeChatApplication.getInstance().getGroupMap().remove(groupId);
+								} else {
+									SuperWeChatApplication.getInstance().getMemberMap().get(groupId).remove(username);
+								}
 								Log.e(TAG, "delete member success!!!!!!!!!!!!!!!!!!!!!!!!!!");
 							}
 						}
