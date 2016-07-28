@@ -632,7 +632,7 @@ public class MessageAdapter extends BaseAdapter{
 			}
 		}
 	}
-	
+	@SuppressWarnings("ResourceType")
 	private void setRobotMenuMessageLayout(LinearLayout parentView,JSONArray jsonArr){
 		try {
 			parentView.removeAllViews();
@@ -965,6 +965,7 @@ public class MessageAdapter extends BaseAdapter{
 	 * @param position
 	 * @param convertView
 	 */
+	@SuppressWarnings("ResourceType")
 	private void handleVoiceMessage(final EMMessage message, final ViewHolder holder, final int position, View convertView) {
 		VoiceMessageBody voiceBody = (VoiceMessageBody) message.getBody();
 		int len = voiceBody.getLength();
