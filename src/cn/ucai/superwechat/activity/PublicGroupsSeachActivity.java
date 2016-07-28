@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,11 +17,13 @@ import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
 
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.utils.UserUtils;
 
 public class PublicGroupsSeachActivity extends BaseActivity{
     private RelativeLayout containerLayout;
     private EditText idET;
     private TextView nameText;
+    private ImageView avatar;
     public static EMGroup searchedGroup;
 
     @Override
@@ -31,7 +34,8 @@ public class PublicGroupsSeachActivity extends BaseActivity{
         containerLayout = (RelativeLayout) findViewById(R.id.rl_searched_group);
         idET = (EditText) findViewById(R.id.et_search_id);
         nameText = (TextView) findViewById(R.id.name);
-        
+        avatar = (ImageView) findViewById(R.id.avatar);
+
         searchedGroup = null;
     }
     
@@ -59,6 +63,7 @@ public class PublicGroupsSeachActivity extends BaseActivity{
                             pd.dismiss();
                             containerLayout.setVisibility(View.VISIBLE);
                             nameText.setText(searchedGroup.getGroupName());
+                            UserUtils.setAppGroupAvatar(PublicGroupsSeachActivity.this, searchedGroup.getGroupId(), avatar);
                         }
                     });
                     
@@ -70,9 +75,9 @@ public class PublicGroupsSeachActivity extends BaseActivity{
                             searchedGroup = null;
                             containerLayout.setVisibility(View.GONE);
                             if(e.getErrorCode() == EMError.GROUP_NOT_EXIST){
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.group_not_existed), 0).show();
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.group_not_existed), Toast.LENGTH_SHORT).show();
                             }else{
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.group_search_failed) + " : " + getString(R.string.connect_failuer_toast), 0).show();
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.group_search_failed) + " : " + getString(R.string.connect_failuer_toast), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
