@@ -7,7 +7,7 @@ import android.util.Log;
 import java.util.List;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.GroupAvatar;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
@@ -41,9 +41,9 @@ public class DownGroupListTask {
                         List<GroupAvatar> list = (List<GroupAvatar>) result.getRetData();
                         if ((list != null) && (list.size() > 0)) {
                             Log.e(TAG, "list.size=" + list.size());
-                            SuperWeChatApplication.getInstance().setGroupList(list);
+                            FuLiCenterApplication.getInstance().setGroupList(list);
                             for (GroupAvatar g : list) {
-                                SuperWeChatApplication.getInstance().getGroupMap().put(g.getMGroupHxid(), g);
+                                FuLiCenterApplication.getInstance().getGroupMap().put(g.getMGroupHxid(), g);
                             }
                             mContext.sendStickyBroadcast(new Intent("update_contact_list"));
                         }
