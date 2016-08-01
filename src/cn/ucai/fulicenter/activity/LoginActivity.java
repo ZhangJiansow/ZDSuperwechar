@@ -53,7 +53,6 @@ import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.User;
 import cn.ucai.fulicenter.task.DownContactListTask;
-import cn.ucai.fulicenter.task.DownGroupListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
@@ -265,7 +264,6 @@ public class LoginActivity extends BaseActivity {
 		FuLiCenterApplication.getInstance().setUser(user);
 		FuLiCenterApplication.currentUserNick = user.getMUserNick();
 		new DownContactListTask(currentUsername,LoginActivity.this).execute();
-		new DownGroupListTask(currentUsername,LoginActivity.this).execute();
 		try {
 			// ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
 			// ** manually load all local groups and

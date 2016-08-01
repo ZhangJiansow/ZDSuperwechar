@@ -98,7 +98,6 @@ import cn.ucai.fulicenter.adapter.ExpressionPagerAdapter;
 import cn.ucai.fulicenter.adapter.MessageAdapter;
 import cn.ucai.fulicenter.adapter.VoicePlayClickListener;
 import cn.ucai.fulicenter.domain.RobotUser;
-import cn.ucai.fulicenter.task.DownMemberMapTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ImageUtils;
 import cn.ucai.fulicenter.utils.SmileUtils;
@@ -410,7 +409,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			}else{
 			    onChatRoomViewCreation();
 			}
-			setUpdateMemberListener();
 		}
 
 		// for chatroom type, we only init conversation and create view adapter on success
@@ -521,7 +519,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         }else{
             ((TextView) findViewById(R.id.name)).setText(toChatUsername);
         }
-		new DownMemberMapTask(toChatUsername,getApplicationContext()).execute();
 		// 监听当前会话的群聊解散被T事件
         groupListener = new GroupListener();
         EMGroupManager.getInstance().addGroupChangeListener(groupListener);
@@ -1237,24 +1234,24 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 				.putExtra("cancel", true), REQUEST_CODE_EMPTY_HISTORY);
 	}
 
-	/**
-	 * 点击进入群组详情
-	 *
-	 * @param view
-	 */
-	public void toGroupDetails(View view) {
-		if (room == null && group == null) {
-			Toast.makeText(getApplicationContext(), R.string.gorup_not_found, Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if(chatType == CHATTYPE_GROUP){
-			startActivityForResult((new Intent(this, GroupDetailsActivity.class).putExtra("groupId", toChatUsername)),
-					REQUEST_CODE_GROUP_DETAIL);
-		}else{
-			startActivityForResult((new Intent(this, ChatRoomDetailsActivity.class).putExtra("roomId", toChatUsername)),
-					REQUEST_CODE_GROUP_DETAIL);
-		}
-	}
+//	/**
+//	 * 点击进入群组详情
+//	 *
+//	 * @param view
+//	 */
+//	public void toGroupDetails(View view) {
+//		if (room == null && group == null) {
+//			Toast.makeText(getApplicationContext(), R.string.gorup_not_found, Toast.LENGTH_SHORT).show();
+//			return;
+//		}
+//		if(chatType == CHATTYPE_GROUP){
+////			startActivityForResult((new Intent(this, GroupDetailsActivity.class).putExtra("groupId", toChatUsername)),
+////					REQUEST_CODE_GROUP_DETAIL);
+//		}else{
+//			startActivityForResult((new Intent(this, ChatRoomDetailsActivity.class).putExtra("roomId", toChatUsername)),
+//					REQUEST_CODE_GROUP_DETAIL);
+//		}
+//	}
 
 	/**
 	 * 显示或隐藏图标按钮页
@@ -1471,9 +1468,6 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		activityInstance = null;
 		if(groupListener != null){
 		    EMGroupManager.getInstance().removeGroupChangeListener(groupListener);
-		}
-		if (mReceiver != null) {
-			unregisterReceiver(mReceiver);
 		}
 	}
 
@@ -1724,8 +1718,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 				public void run() {
 					if (toChatUsername.equals(groupId)) {
 						Toast.makeText(ChatActivity.this, st13, Toast.LENGTH_LONG).show();
-						if (GroupDetailsActivity.instance != null)
-							GroupDetailsActivity.instance.finish();
+//						if (GroupDetailsActivity.instance != null)
+//							GroupDetailsActivity.instance.finish();
 						finish();
 					}
 				}
@@ -1741,8 +1735,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 				public void run() {
 					if (toChatUsername.equals(groupId)) {
 						Toast.makeText(ChatActivity.this, st14, Toast.LENGTH_LONG).show();
-						if (GroupDetailsActivity.instance != null)
-							GroupDetailsActivity.instance.finish();
+//						if (GroupDetailsActivity.instance != null)
+//							GroupDetailsActivity.instance.finish();
 						finish();
 					}
 				}
@@ -1757,21 +1751,5 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	public ListView getListView() {
 		return listView;
-	}
-
-	class UpdateMemberListener extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			Log.e(TAG, "update adapter...");
-			adapter.notifyDataSetChanged();
-		}
-	}
-
-	UpdateMemberListener mReceiver;
-
-	private void setUpdateMemberListener() {
-		mReceiver = new UpdateMemberListener();
-		IntentFilter filter = new IntentFilter("update_member_list");
-		registerReceiver(mReceiver, filter);
 	}
 }

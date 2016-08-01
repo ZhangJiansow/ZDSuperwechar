@@ -36,17 +36,19 @@ public class DownContactListTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-
                         Log.e(TAG, "s" + s);
                         Result result = Utils.getListResultFromJson(s, UserAvatar.class);
-
-                        List<UserAvatar> list = (List<UserAvatar>) result.getRetData();
-                        if ((list != null) && (list.size() > 0)) {
-                            FuLiCenterApplication.getInstance().setUserList(list);
-                            mContext.sendStickyBroadcast(new Intent("update_contact_list"));
-                            Map<String, UserAvatar> userMap = FuLiCenterApplication.getInstance().getUserMap();
-                            for (UserAvatar u : list) {
-                                userMap.put(u.getMUserName(),u);
+                        Log.e(TAG, "result=" + result);
+                        if (result != null) {
+                            List<UserAvatar> list = (List<UserAvatar>) result.getRetData();
+                            Log.e(TAG, "list=" + list);
+                            if ((list != null) && (list.size() > 0)) {
+                                FuLiCenterApplication.getInstance().setUserList(list);
+                                mContext.sendStickyBroadcast(new Intent("update_contact_list"));
+                                Map<String, UserAvatar> userMap = FuLiCenterApplication.getInstance().getUserMap();
+                                for (UserAvatar u : list) {
+                                    userMap.put(u.getMUserName(),u);
+                                }
                             }
                         }
                     }
