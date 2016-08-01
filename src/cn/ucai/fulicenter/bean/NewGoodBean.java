@@ -1,5 +1,8 @@
 package cn.ucai.fulicenter.bean;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -38,7 +41,8 @@ public class NewGoodBean implements Serializable {
     private String currencyPrice;
     private String promotePrice;
     private String rankPrice;
-    private boolean promote;
+    @JsonProperty("isPromote")
+    private boolean isPromote;
     private String goodsThumb;
     private String goodsImg;
     private int colorId;
@@ -127,12 +131,13 @@ public class NewGoodBean implements Serializable {
         this.rankPrice = rankPrice;
     }
 
+    @JsonIgnore
     public boolean isPromote() {
-        return promote;
+        return isPromote;
     }
 
     public void setPromote(boolean promote) {
-        this.promote = promote;
+        this.isPromote = promote;
     }
 
     public String getGoodsThumb() {
@@ -204,7 +209,7 @@ public class NewGoodBean implements Serializable {
                 ", currencyPrice='" + currencyPrice + '\'' +
                 ", promotePrice='" + promotePrice + '\'' +
                 ", rankPrice='" + rankPrice + '\'' +
-                ", promote=" + promote +
+                ", promote=" + isPromote +
                 ", goodsThumb='" + goodsThumb + '\'' +
                 ", goodsImg='" + goodsImg + '\'' +
                 ", colorId=" + colorId +
