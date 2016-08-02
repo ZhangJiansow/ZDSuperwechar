@@ -13,8 +13,15 @@
  */
 package cn.ucai.fulicenter.utils;
 
+import android.content.Context;
+import android.widget.ImageView;
+
 import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
+import com.squareup.picasso.Picasso;
+
+import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.R;
 
 public class ImageUtils {
 //	public static String getThumbnailImagePath(String imagePath) {
@@ -41,6 +48,10 @@ public class ImageUtils {
         EMLog.d("msg", "thum image path:" + path);
         return path;
     }
-	
+
+	public static void setGoodThumb(Context context, ImageView imageView,String thumb) {
+		String url = I.DOWNLOAD_BOUTIQUE_IMG_URL + thumb;
+		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
+	}
 	
 }
