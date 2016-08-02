@@ -16,8 +16,11 @@ public class FuliCenterMainActivity extends BaseActivity{
     RadioButton rbNewGood,rbBoutique,rbCategory,rbCart,rbPersonal;
     TextView tvCartHint;
     RadioButton[] mrbTabs;
+
     int index;
     int currentIndex;
+
+    NewGoodFragment mNewGoodFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +36,20 @@ public class FuliCenterMainActivity extends BaseActivity{
         rbPersonal = (RadioButton) findViewById(R.id.ivPersonal);
         tvCartHint = (TextView) findViewById(R.id.tvCartHint);
         mrbTabs = new RadioButton[5];
-        mrbTabs = new RadioButton[5];
         mrbTabs[0] = rbNewGood;
         mrbTabs[1] = rbBoutique;
         mrbTabs[2] = rbCategory;
         mrbTabs[3] = rbCart;
         mrbTabs[4] = rbPersonal;
+
+        mNewGoodFragment = new NewGoodFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, mNewGoodFragment)
+//                .add(R.id.fragment_container, contactListFragment)
+//                .hide(contactListFragment)
+                .show(mNewGoodFragment)
+                .commit();
     }
 
     public void onCheckedChange(View view) {
