@@ -37,7 +37,7 @@ public class NewGoodFragment extends Fragment{
     GoodAdapter mAdapter;
 
     int pageId = 0;
-    int pageSize = 10;
+    int action=I.ACTION_DOWNLOAD;
     TextView tvHint;
 
     @Nullable
@@ -69,6 +69,7 @@ public class NewGoodFragment extends Fragment{
                 Log.e(TAG, "newState=" + newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE&&lastItemPosition==mAdapter.getItemCount()-1) {
                     if (mAdapter.isMore()) {
+                        action = I.ACTION_PULL_UP;
                         pageId += I.PAGE_SIZE_DEFAULT;
                         initData();
                     }
@@ -89,6 +90,7 @@ public class NewGoodFragment extends Fragment{
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                action = I.ACTION_PULL_DOWN;
                 tvHint.setVisibility(View.VISIBLE);
                 pageId = 0;
                 initData();
@@ -108,11 +110,18 @@ public class NewGoodFragment extends Fragment{
                 if (result != null) {
                     Log.e(TAG, "result.length=" + result.length);
                     ArrayList<NewGoodBean> goodBeanArrayList = Utils.array2List(result);
-                    mAdapter.initData(goodBeanArrayList);
+                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
+                        mAdapter.initData(goodBeanArrayList);
+                    } else {
+                        mAdapter.addItem(goodBeanArrayList);
+                    }
                     if (goodBeanArrayList.size() < I.PAGE_SIZE_DEFAULT) {
                         mAdapter.setMore(false);
                         mAdapter.setFooterString(getResources().getString(R.string.no_more));
                     }
+                } else {
+                    mAdapter.setMore(false);
+                    mAdapter.setFooterString(getResources().getString(R.string.no_more));
                 }
             }
 
@@ -130,7 +139,7 @@ public class NewGoodFragment extends Fragment{
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(I.CAT_ID))
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
-                .addParam(I.PAGE_SIZE,String.valueOf(pageSize))
+                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(NewGoodBean[].class)
                 .execute(listener);
     }
