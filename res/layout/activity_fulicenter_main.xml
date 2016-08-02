@@ -42,20 +42,19 @@
                 android:textColor="@color/main_botton_text_color"
                 android:checked="false"/>
             <RelativeLayout
-                style="@style/menu_item_style">
+                style="@style/style_menu_item">
                 <RadioButton
                     android:id="@+id/ivCart"
-                    android:drawableTop="@drawable/selector_menu_item_cart"
                     style="@style/menu_item_style_cart"
-                    android:text="购物车"
                     android:button="@null"
+                    android:text="购物车"
+                    android:checked="false"
                     android:textColor="@color/main_botton_text_color"
-                    android:checked="false"/>
+                    android:drawableTop="@drawable/selector_menu_item_cart"/>
                 <LinearLayout
                     android:id="@+id/shopping_cart_num_bg"
                     android:layout_width="55dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="3dp"
                     android:layout_centerInParent="true"
@@ -71,7 +70,7 @@
                         android:gravity="center"
                         android:padding="2dp"
                         android:paddingLeft="50dp"
-                        android:text="1300"
+                        android:text="13"
                         android:textColor="#fff"
                         android:textSize="12dp" />
                 </LinearLayout>

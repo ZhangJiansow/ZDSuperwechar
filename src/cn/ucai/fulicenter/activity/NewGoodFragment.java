@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +29,17 @@ import cn.ucai.fulicenter.utils.Utils;
 public class NewGoodFragment extends Fragment{
     private final static String TAG = NewGoodFragment.class.getCanonicalName();
     FuliCenterMainActivity mContext;
+    List<NewGoodBean> mGoodList;
+
     SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView mRecyclerView;
     GridLayoutManager mGridLayoutManager;
     GoodAdapter mAdapter;
-    List<NewGoodBean> mGoodList;
-    int pageId = 1;
+
+    int pageId = 0;
+    int pageSize = 10;
+    TextView tvHint;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,7 +48,50 @@ public class NewGoodFragment extends Fragment{
         mGoodList = new ArrayList<NewGoodBean>();
         initView(layout);
         initData();
+        setListener();
         return layout;
+    }
+
+    private void setListener() {
+        setPullDownRefreshListener();
+        setPullUpRefreshListener();
+    }
+
+    private void setPullUpRefreshListener() {
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            int lastItemPosition;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int a = RecyclerView.SCROLL_STATE_DRAGGING;//1
+                int b = RecyclerView.SCROLL_STATE_IDLE;//0
+                int c = RecyclerView.SCROLL_STATE_SETTLING;//2
+                Log.e(TAG, "newState=" + newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE&&lastItemPosition==mAdapter.getItemCount()-1) {
+                    pageId += I.PAGE_SIZE_DEFAULT;
+                    initData();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstPosition = mGridLayoutManager.findFirstVisibleItemPosition();
+                lastItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
+                Log.e(TAG, "first=" + firstPosition + ",last=" + lastItemPosition);
+            }
+        });
+    }
+
+    private void setPullDownRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                tvHint.setVisibility(View.VISIBLE);
+                pageId = 1;
+                initData();
+            }
+        });
     }
 
     private void initData() {
@@ -50,6 +99,8 @@ public class NewGoodFragment extends Fragment{
             @Override
             public void onSuccess(NewGoodBean[] result) {
                 Log.e(TAG, "result=" + result);
+                tvHint.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
                 if (result != null) {
                     Log.e(TAG, "result.length=" + result.length);
                     ArrayList<NewGoodBean> goodBeanArrayList = Utils.array2List(result);
@@ -60,6 +111,8 @@ public class NewGoodFragment extends Fragment{
             @Override
             public void onError(String error) {
                 Log.e(TAG, "error=" + error);
+                tvHint.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -69,7 +122,7 @@ public class NewGoodFragment extends Fragment{
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(I.CAT_ID))
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
-                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .addParam(I.PAGE_SIZE,String.valueOf(pageSize))
                 .targetClass(NewGoodBean[].class)
                 .execute(listener);
     }
@@ -88,5 +141,6 @@ public class NewGoodFragment extends Fragment{
         mAdapter = new GoodAdapter(mContext, mGoodList);
         mRecyclerView.setAdapter(mAdapter);
 
+        tvHint = (TextView) layout.findViewById(R.id.tv_refresh_hint);
     }
 }
