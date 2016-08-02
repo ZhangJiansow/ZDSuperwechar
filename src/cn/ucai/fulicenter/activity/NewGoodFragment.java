@@ -68,8 +68,10 @@ public class NewGoodFragment extends Fragment{
                 int c = RecyclerView.SCROLL_STATE_SETTLING;//2
                 Log.e(TAG, "newState=" + newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE&&lastItemPosition==mAdapter.getItemCount()-1) {
-                    pageId += I.PAGE_SIZE_DEFAULT;
-                    initData();
+                    if (mAdapter.isMore()) {
+                        pageId += I.PAGE_SIZE_DEFAULT;
+                        initData();
+                    }
                 }
             }
 
@@ -88,7 +90,7 @@ public class NewGoodFragment extends Fragment{
             @Override
             public void onRefresh() {
                 tvHint.setVisibility(View.VISIBLE);
-                pageId = 1;
+                pageId = 0;
                 initData();
             }
         });
@@ -99,12 +101,18 @@ public class NewGoodFragment extends Fragment{
             @Override
             public void onSuccess(NewGoodBean[] result) {
                 Log.e(TAG, "result=" + result);
-                tvHint.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
+                tvHint.setVisibility(View.GONE);
+                mAdapter.setMore(true);
+                mAdapter.setFooterString(getResources().getString(R.string.load_more));
                 if (result != null) {
                     Log.e(TAG, "result.length=" + result.length);
                     ArrayList<NewGoodBean> goodBeanArrayList = Utils.array2List(result);
                     mAdapter.initData(goodBeanArrayList);
+                    if (goodBeanArrayList.size() < I.PAGE_SIZE_DEFAULT) {
+                        mAdapter.setMore(false);
+                        mAdapter.setFooterString(getResources().getString(R.string.no_more));
+                    }
                 }
             }
 

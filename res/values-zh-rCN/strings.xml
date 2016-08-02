@@ -342,4 +342,6 @@
     <string name="generic_error">下载失败</string>
     <string name="share">分享</string>
     <string name="user_qrcode">我的二维码</string>
+    <string name="load_more">加载更多...</string>
+    <string name="no_more">没有更多加载</string>
 </resources>
