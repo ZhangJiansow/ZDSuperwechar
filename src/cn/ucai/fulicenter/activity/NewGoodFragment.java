@@ -80,8 +80,13 @@ public class NewGoodFragment extends Fragment{
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int firstPosition = mGridLayoutManager.findFirstVisibleItemPosition();
+                int lastPosition = mGridLayoutManager.findLastVisibleItemPosition();
+                Log.e(TAG, "firstPosition=" + firstPosition + ",lastPosition=" + lastPosition);
                 lastItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
-                Log.e(TAG, "first=" + firstPosition + ",last=" + lastItemPosition);
+                mSwipeRefreshLayout.setEnabled(mGridLayoutManager.findFirstVisibleItemPosition() == 0);
+                if (firstPosition == -1 || lastPosition == -1) {
+                    lastItemPosition = mAdapter.getItemCount() - 1;
+                }
             }
         });
     }
