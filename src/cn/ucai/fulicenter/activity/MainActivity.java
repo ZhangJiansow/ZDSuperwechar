@@ -150,8 +150,12 @@ public class  MainActivity extends BaseActivity implements EMEventListener {
 		settingFragment = new SettingsFragment();
 		fragments = new Fragment[] { chatHistoryFragment, contactListFragment, settingFragment };
 		// 添加显示第一个fragment
-		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, chatHistoryFragment)
-				.add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(chatHistoryFragment)
+		getSupportFragmentManager()
+				.beginTransaction()
+				.add(R.id.fragment_container, chatHistoryFragment)
+				.add(R.id.fragment_container, contactListFragment)
+				.hide(contactListFragment)
+				.show(chatHistoryFragment)
 				.commit();
 		
 		init();

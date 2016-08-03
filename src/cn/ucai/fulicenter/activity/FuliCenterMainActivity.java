@@ -1,8 +1,11 @@
 package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -21,6 +24,9 @@ public class FuliCenterMainActivity extends BaseActivity{
     int currentIndex;
 
     NewGoodFragment mNewGoodFragment;
+    BoutiqueFragment mBoutiqueFragment;
+
+    Fragment[] fragments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +49,13 @@ public class FuliCenterMainActivity extends BaseActivity{
         mrbTabs[4] = rbPersonal;
 
         mNewGoodFragment = new NewGoodFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
+        fragments = new Fragment[] { mNewGoodFragment, mBoutiqueFragment};
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mNewGoodFragment)
-//                .add(R.id.fragment_container, contactListFragment)
-//                .hide(contactListFragment)
+//                .add(R.id.fragment_container, mBoutiqueFragment)
+//                .hide(mBoutiqueFragment)
                 .show(mNewGoodFragment)
                 .commit();
     }
@@ -70,6 +78,18 @@ public class FuliCenterMainActivity extends BaseActivity{
                 index = 4;
                 break;
         }
+        if (currentIndex != index) {
+            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+            trx.hide(fragments[currentIndex]);
+            if (!fragments[index].isAdded()) {
+                trx.add(R.id.fragment_container, fragments[index]);
+            }
+            trx.show(fragments[index]).commit();
+        }
+        mrbTabs[currentIndex].setSelected(false);
+        // 把当前tab设为选中状态
+        mrbTabs[index].setSelected(true);
+        currentIndex = index;
         Log.e(TAG, "index=" + index + ",currentIndex=" + currentIndex);
         if (index != currentIndex) {
             setRadioButtonStatus(index);

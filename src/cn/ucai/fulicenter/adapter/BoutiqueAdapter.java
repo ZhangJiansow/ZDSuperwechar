@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.List;
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.FuliCenterMainActivity;
 import cn.ucai.fulicenter.activity.GoodDetailsActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.NewGoodBean;
@@ -30,15 +32,18 @@ import cn.ucai.fulicenter.view.FooterViewHolder;
  * Created by 27932 on 2016/8/1.
  */
 public class BoutiqueAdapter extends RecyclerView.Adapter<ViewHolder>{
+    private static final String TAG = BoutiqueAdapter.class.getSimpleName();
     Context mContext;
     List<BoutiqueBean> mBoutiqueList;
     BoutiqueViewHolder mBoutiqueViewHolder;
     FooterViewHolder mFooterViewHolder;
     boolean isMore;
-    String footerString;
+    final static int FooterType = 0;
+    final static int ItemType = 1;
+    String FooterText;
 
     public void setFooterString(String footerString) {
-        this.footerString = footerString;
+        FooterText = footerString;
         notifyDataSetChanged();
     }
 
@@ -78,19 +83,19 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<ViewHolder>{
             final BoutiqueBean boutique = mBoutiqueList.get(position);
             ImageUtils.setGoodThumb(mContext, mBoutiqueViewHolder.ivBoutiqueThumb, boutique.getImageurl());
             mBoutiqueViewHolder.tvTitle.setText(boutique.getTitle());
-            mBoutiqueViewHolder.tvName.setText(boutique.getDescription());
+            mBoutiqueViewHolder.tvName.setText(boutique.getName());
             mBoutiqueViewHolder.tvDesc.setText(boutique.getDescription());
-//            mGoodViewHolder.layout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    mContext.startActivity(new Intent(mContext, GoodDetailsActivity.class)
-//                    .putExtra(D.GoodDetails.KEY_GOODS_ID,good.getGoodsId()));
-//                }
-//            });
+            mBoutiqueViewHolder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, FuliCenterMainActivity.class)
+                            .putExtra(D.Boutique.KEY_ID,boutique.getId()));
+                }
+            });
         }
         if (holder instanceof FooterViewHolder) {
             mFooterViewHolder = (FooterViewHolder) holder;
-            mFooterViewHolder.tvFooter.setText(footerString);
+            mFooterViewHolder.tvFooter.setText(FooterText);
         }
     }
 
