@@ -165,6 +165,12 @@
             android:launchMode="singleTask"
             android:theme="@style/nornal_style" >
         </activity>
+        <!-- 新品详情 -->
+        <activity
+            android:name="cn.ucai.fulicenter.activity.GoodDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/nornal_style" >
+        </activity>
         <!-- 视频通话 -->
         <activity
             android:name="cn.ucai.fulicenter.activity.VideoCallActivity"

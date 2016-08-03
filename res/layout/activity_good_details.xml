@@ -37,6 +37,7 @@
                 android:padding="5dp"
                 android:src="@drawable/bg_cart_selected"/>
             <TextView
+                android:id="@+id/tv_good_cart_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10"
@@ -48,7 +49,7 @@
     <RelativeLayout
         android:id="@+id/layout_banner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="25dp"
         android:layout_below="@+id/layout_title">
         <TextView
@@ -105,14 +106,12 @@
                 app:r="5dp"
                 app:space="3dp" />
         </RelativeLayout>
+        <WebView
+            android:id="@+id/wv_good_brief"
+            android:layout_below="@+id/layout_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/good_detail_bg_white"/>
     </RelativeLayout>
-    <WebView
-        android:id="@+id/wv_good_brief"
-        android:layout_below="@+id/layout_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:background="@color/good_detail_bg_white">
-    </WebView>
 </RelativeLayout>
