@@ -77,13 +77,19 @@
             android:theme="@style/horizontal_slide" 
             android:windowSoftInputMode="adjustResize|stateVisible">
         </activity>
-
+        <!-- 新品首页 -->
+        <activity
+            android:name="cn.ucai.fulicenter.activity.GoodDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustResize|stateVisible">
         <!-- 注册 -->
         <activity
-            android:name="cn.ucai.fulicenter.activity.RegisterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" 
-            android:windowSoftInputMode="adjustResize|stateVisible">
+        android:name="cn.ucai.fulicenter.activity.RegisterActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/horizontal_slide"
+        android:windowSoftInputMode="adjustResize|stateVisible">
+            </activity>
         </activity>
         <!-- 聊天页面 -->
         <activity
@@ -163,12 +169,6 @@
             android:name="cn.ucai.fulicenter.activity.VoiceCallActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            android:theme="@style/nornal_style" >
-        </activity>
-        <!-- 新品详情 -->
-        <activity
-            android:name="cn.ucai.fulicenter.activity.GoodDetailsActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/nornal_style" >
         </activity>
         <!-- 视频通话 -->
