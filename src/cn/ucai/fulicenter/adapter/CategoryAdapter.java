@@ -124,6 +124,12 @@ public class CategoryAdapter extends BaseExpandableListAdapter{
         return false;
     }
 
+    public void addAll(List<CategoryGroupBean> mGroupList, List<ArrayList<CategoryChildBean>> mChildList) {
+        this.mGroupList.addAll(mGroupList);
+        this.mChildList.addAll(mChildList);
+        notifyDataSetChanged();
+    }
+
     class GroupViewHolder {
         ImageView ivGroupThumb;
         TextView tvGroupName;
