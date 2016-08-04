@@ -25,6 +25,7 @@ public class FuliCenterMainActivity extends BaseActivity{
 
     NewGoodFragment mNewGoodFragment;
     BoutiqueFragment mBoutiqueFragment;
+    CategoryFragment mCategoryFragment;
 
     Fragment[] fragments;
     @Override
@@ -38,12 +39,14 @@ public class FuliCenterMainActivity extends BaseActivity{
     private void initFragment() {
         mNewGoodFragment = new NewGoodFragment();
         mBoutiqueFragment = new BoutiqueFragment();
-        fragments = new Fragment[] { mNewGoodFragment, mBoutiqueFragment};
+        mCategoryFragment = new CategoryFragment();
+        fragments = new Fragment[] { mNewGoodFragment, mBoutiqueFragment,mCategoryFragment};
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mNewGoodFragment)
                 .add(R.id.fragment_container, mBoutiqueFragment)
-                .hide(mBoutiqueFragment)
+                .add(R.id.fragment_container,mCategoryFragment)
+                .hide(mBoutiqueFragment).hide(mCategoryFragment)
                 .show(mNewGoodFragment)
                 .commit();
     }
@@ -61,8 +64,6 @@ public class FuliCenterMainActivity extends BaseActivity{
         mrbTabs[2] = rbCategory;
         mrbTabs[3] = rbCart;
         mrbTabs[4] = rbPersonal;
-
-
     }
 
     public void onCheckedChange(View view) {
