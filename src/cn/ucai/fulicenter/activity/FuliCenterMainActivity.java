@@ -32,6 +32,20 @@ public class FuliCenterMainActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fulicenter_main);
         initView();
+        initFragment();
+    }
+
+    private void initFragment() {
+        mNewGoodFragment = new NewGoodFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
+        fragments = new Fragment[] { mNewGoodFragment, mBoutiqueFragment};
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, mNewGoodFragment)
+                .add(R.id.fragment_container, mBoutiqueFragment)
+                .hide(mBoutiqueFragment)
+                .show(mNewGoodFragment)
+                .commit();
     }
 
     private void initView() {
@@ -48,16 +62,7 @@ public class FuliCenterMainActivity extends BaseActivity{
         mrbTabs[3] = rbCart;
         mrbTabs[4] = rbPersonal;
 
-        mNewGoodFragment = new NewGoodFragment();
-        mBoutiqueFragment = new BoutiqueFragment();
-        fragments = new Fragment[] { mNewGoodFragment, mBoutiqueFragment};
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, mNewGoodFragment)
-//                .add(R.id.fragment_container, mBoutiqueFragment)
-//                .hide(mBoutiqueFragment)
-                .show(mNewGoodFragment)
-                .commit();
+
     }
 
     public void onCheckedChange(View view) {

@@ -21,6 +21,7 @@ import java.util.List;
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.activity.FuliCenterMainActivity;
 import cn.ucai.fulicenter.activity.GoodDetailsActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
@@ -88,8 +89,9 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<ViewHolder>{
             mBoutiqueViewHolder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, FuliCenterMainActivity.class)
-                            .putExtra(D.Boutique.KEY_ID,boutique.getId()));
+                    mContext.startActivity(new Intent(mContext, BoutiqueChildActivity.class)
+                            .putExtra(D.Boutique.KEY_GOODS_ID,boutique.getId())
+                            .putExtra(D.Boutique.KEY_NAME,boutique.getName()));
                 }
             });
         }
