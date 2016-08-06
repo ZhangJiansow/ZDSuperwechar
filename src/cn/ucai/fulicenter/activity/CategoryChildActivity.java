@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.activity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -156,7 +157,7 @@ public class CategoryChildActivity extends BaseActivity{
 
     private void findBoutiqueChildList(OkHttpUtils2.OnCompleteListener<NewGoodBean[]> listener) {
         OkHttpUtils2<NewGoodBean[]> utils = new OkHttpUtils2<NewGoodBean[]>();
-        utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
+        utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
                 .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(catId))
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
                 .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
@@ -189,22 +190,31 @@ public class CategoryChildActivity extends BaseActivity{
 
         @Override
         public void onClick(View v) {
+            Drawable right;
             switch (v.getId()) {
                 case R.id.btn_sort_price:
                     if (mSortPriceAsc) {
                         sortBy = I.SORT_BY_PRICE_ASC;
+                        right = getResources().getDrawable(R.drawable.arrow_order_up);
                     } else {
                         sortBy = I.SORT_BY_PRICE_DESC;
+                        right = getResources().getDrawable(R.drawable.arrow_order_down);
                     }
                     mSortPriceAsc = !mSortPriceAsc;
+                    right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
+                    btnSortPrice.setCompoundDrawablesWithIntrinsicBounds(null,null,right,null);
                     break;
                 case R.id.btn_sort_addtime:
                     if (mSortAddTimeAsc) {
                         sortBy = I.SORT_BY_ADDTIME_ASC;
+                        right = getResources().getDrawable(R.drawable.arrow_order_up);
                     } else {
                         sortBy = I.SORT_BY_ADDTIME_DESC;
+                        right = getResources().getDrawable(R.drawable.arrow_order_down);
                     }
                     mSortAddTimeAsc = !mSortAddTimeAsc;
+                    right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
+                    btnSortAddTime.setCompoundDrawablesWithIntrinsicBounds(null,null,right,null);
                     break;
             }
             mAdapter.setSortBy(sortBy);
