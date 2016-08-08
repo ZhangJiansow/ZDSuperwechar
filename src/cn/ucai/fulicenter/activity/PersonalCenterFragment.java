@@ -66,6 +66,7 @@ public class PersonalCenterFragment extends Fragment{
         MyClickListener listener = new MyClickListener();
         mtvSettings.setOnClickListener(listener);
         layoutUserCenter.setOnClickListener(listener);
+        layoutCollect.setOnClickListener(listener);
         updateCollectCountListener();
     }
 
@@ -78,6 +79,9 @@ public class PersonalCenterFragment extends Fragment{
                     case R.id.tv_center_settings:
                     case R.id.center_user_info:
                         startActivity(new Intent(mContext, SettingsActivity.class));
+                        break;
+                    case R.id.layout_center_collect:
+                        startActivity(new Intent(mContext, CollectActivity.class));
                         break;
                 }
             } else {
@@ -114,7 +118,7 @@ public class PersonalCenterFragment extends Fragment{
         data.add(order4);
         HashMap<String, Object> order5 = new HashMap<String, Object>();
         order5.put("order", R.drawable.order_list5);
-        data.add(order1);
+        data.add(order5);
         SimpleAdapter adapter = new SimpleAdapter(mContext, data,R.layout.simple_adapter,
                 new String[]{"order"},new int[]{R.id.iv_order});
         gvOrderList.setAdapter(adapter);

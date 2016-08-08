@@ -83,6 +83,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide">
         </activity>
+        <!-- 收藏的宝贝 -->
+        <activity
+            android:name="cn.ucai.fulicenter.activity.CollectActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide">
+        </activity>
         <!-- 个人中心设置 -->
         <activity
             android:name="cn.ucai.fulicenter.activity.SettingsActivity"
