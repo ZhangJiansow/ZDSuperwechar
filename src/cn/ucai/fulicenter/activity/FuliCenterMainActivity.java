@@ -146,7 +146,7 @@ public class FuliCenterMainActivity extends BaseActivity{
         super.onResume();
         Log.e(TAG, "onResume");
         if (!DemoHXSDKHelper.getInstance().isLogined() && index == 4) {
-            index = 4;
+            index = 0;
         }
         setFragment();
         setRadioButtonStatus(currentIndex);
