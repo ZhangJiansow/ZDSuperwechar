@@ -32,7 +32,7 @@ public class DownCollectCountTask {
     public void execute() {
         OkHttpUtils2<MessageBean> utils2 = new OkHttpUtils2<MessageBean>();
         utils2.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
-                .addParam(I.Contact.USER_NAME,username)
+                .addParam(I.Collect.USER_NAME,username)
                 .targetClass(MessageBean.class)
                 .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
                     @Override
