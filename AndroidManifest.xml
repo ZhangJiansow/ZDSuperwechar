@@ -77,9 +77,15 @@
             android:theme="@style/horizontal_slide" 
             android:windowSoftInputMode="adjustResize|stateVisible">
         </activity>
-        <!-- 登陆 -->
+        <!-- 分类二级界面 -->
         <activity
             android:name="cn.ucai.fulicenter.activity.CategoryChildActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide">
+        </activity>
+        <!-- 个人中心设置 -->
+        <activity
+            android:name="cn.ucai.fulicenter.activity.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide">
         </activity>
