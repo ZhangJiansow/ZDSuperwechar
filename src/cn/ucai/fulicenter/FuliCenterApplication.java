@@ -119,6 +119,16 @@ public class FuLiCenterApplication extends Application {
 	private UserAvatar user;
 	private List<UserAvatar> userList = new ArrayList<UserAvatar>();
 	private Map<String, UserAvatar> userMap = new HashMap<String, UserAvatar>();
+	/*当前登录用户收藏商品数量*/
+	private int collectCount;
+
+	public int getCollectCount() {
+		return collectCount;
+	}
+
+	public void setCollectCount(int collectCount) {
+		this.collectCount = collectCount;
+	}
 
 	public Map<String, UserAvatar> getUserMap() {
 		return userMap;

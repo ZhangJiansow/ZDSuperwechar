@@ -89,9 +89,7 @@ public class UserUtils {
 		path.append(I.QUESTION).append(I.KEY_REQUEST)
 				.append(I.EQU).append(I.REQUEST_DOWNLOAD_AVATAR)
 				.append(I.AND)
-				.append(I.NAME_OR_HXID).append(I.EQU).append(username)
-				.append(I.AND)
-				.append(I.AVATAR_TYPE).append(I.EQU).append(I.AVATAR_TYPE_USER_PATH);
+				.append(I.AVATAR_TYPE).append(I.EQU).append(username);
 		return path.toString();
 	}
 
