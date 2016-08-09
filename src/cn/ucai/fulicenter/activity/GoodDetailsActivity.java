@@ -1,8 +1,10 @@
 package cn.ucai.fulicenter.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import cn.ucai.fulicenter.bean.AlbumsBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
+import cn.ucai.fulicenter.task.DownCollectCountTask;
 import cn.ucai.fulicenter.view.DisplayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
@@ -47,6 +50,8 @@ public class GoodDetailsActivity extends BaseActivity {
     int mGoodId;
     GoodDetailsBean mGoodDetails;
 
+    boolean isCollect;
+
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -54,6 +59,12 @@ public class GoodDetailsActivity extends BaseActivity {
         mContext = this;
         initView();
         initData();
+        setListener();
+    }
+
+    private void setListener() {
+        MyOnClickListener listener = new MyOnClickListener();
+        ivCollect.setOnClickListener(listener);
     }
 
     private void initData() {
@@ -162,10 +173,11 @@ public class GoodDetailsActivity extends BaseActivity {
                         public void onSuccess(MessageBean result) {
                             Log.e(TAG, "result=" + result);
                             if (result != null && result.isSuccess()) {
-                                ivCollect.setImageResource(R.drawable.bg_collect_out);
+                                isCollect = true;
                             } else {
-                                ivCollect.setImageResource(R.drawable.bg_collect_in);
+                                isCollect = false;
                             }
+                            updateCollectStatus();
                         }
 
                         @Override
@@ -173,6 +185,91 @@ public class GoodDetailsActivity extends BaseActivity {
                             Log.e(TAG, "error=" + error);
                         }
                     });
+        }
+    }
+
+    class MyOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.iv_good_collect:
+                    goodCollect();
+                    break;
+            }
+        }
+    }
+
+    private void goodCollect() {
+        if (DemoHXSDKHelper.getInstance().isLogined()) {
+            if (isCollect) {
+                OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
+                utils.setRequestUrl(I.REQUEST_DELETE_COLLECT)
+                        .addParam(I.Collect.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
+                        .addParam(I.Collect.GOODS_ID, String.valueOf(mGoodId))
+                        .targetClass(MessageBean.class)
+                        .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                Log.e(TAG, "result=" + result);
+                                if (result != null) {
+                                    isCollect = false;
+                                    new DownCollectCountTask(FuLiCenterApplication.getInstance().getUserName(), mContext).execute();
+                                    sendStickyBroadcast(new Intent("update_collect_list"));
+                                } else {
+                                    Log.e(TAG, "删除失败");
+                                }
+                                updateCollectStatus();
+                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Log.e(TAG, "error=" + error);
+                            }
+                        });
+            } else {
+                OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<>();
+                utils.setRequestUrl(I.REQUEST_ADD_COLLECT)
+                        .addParam(I.Collect.USER_NAME,FuLiCenterApplication.getInstance().getUserName())
+                        .addParam(I.Collect.GOODS_ID,String.valueOf(mGoodDetails.getGoodsId()))
+                        .addParam(I.Collect.ADD_TIME,String.valueOf(mGoodDetails.getAddTime()))
+                        .addParam(I.Collect.GOODS_ENGLISH_NAME,mGoodDetails.getGoodsEnglishName())
+                        .addParam(I.Collect.GOODS_IMG,mGoodDetails.getGoodsImg())
+                        .addParam(I.Collect.GOODS_THUMB,mGoodDetails.getGoodsThumb())
+                        .addParam(I.Collect.GOODS_NAME,mGoodDetails.getGoodsName())
+                        .targetClass(MessageBean.class)
+                        .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                Log.e(TAG, "result=" + result);
+                                if (result != null && result.isSuccess()) {
+                                    isCollect = true;
+                                    new DownCollectCountTask(FuLiCenterApplication.getInstance().getUserName(), mContext).execute();
+                                    sendStickyBroadcast(new Intent("update_collect_list"));
+                                } else {
+                                    Log.e(TAG, "删除失败");
+                                }
+                                updateCollectStatus();
+                                Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Log.e(TAG, "error=" + error);
+                            }
+                        });
+            }
+        } else {
+            startActivity(new Intent(mContext,LoginActivity.class));
+        }
+    }
+
+    private void updateCollectStatus() {
+        if (isCollect) {
+            ivCollect.setImageResource(R.drawable.bg_collect_out);
+        } else {
+            ivCollect.setImageResource(R.drawable.bg_collect_in);
         }
     }
 }

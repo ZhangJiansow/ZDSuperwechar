@@ -297,10 +297,10 @@ public class LoginActivity extends BaseActivity {
 		if (!LoginActivity.this.isFinishing() && pd.isShowing()) {
 			pd.dismiss();
 		}
-		// 进入主页面
-		Intent intent = new Intent(LoginActivity.this,
-				FuliCenterMainActivity.class);
-		startActivity(intent);
+//		// 进入主页面
+//		Intent intent = new Intent(LoginActivity.this,
+//				FuliCenterMainActivity.class);
+//		startActivity(intent);
 
 		finish();
 	}
