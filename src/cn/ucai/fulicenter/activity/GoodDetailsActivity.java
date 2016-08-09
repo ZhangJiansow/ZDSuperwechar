@@ -10,10 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.ucai.fulicenter.D;
+import cn.ucai.fulicenter.DemoHXSDKHelper;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumsBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.view.DisplayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
@@ -138,5 +141,38 @@ public class GoodDetailsActivity extends BaseActivity {
         WebSettings settings = wvGoodBrief.getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setBuiltInZoomControls(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initCollectStatus();
+    }
+
+    private void initCollectStatus() {
+        if (DemoHXSDKHelper.getInstance().isLogined()) {
+            String userName = FuLiCenterApplication.getInstance().getUserName();
+            OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
+            utils.setRequestUrl(I.REQUEST_IS_COLLECT)
+                    .addParam(I.Collect.USER_NAME,userName)
+                    .addParam(I.Collect.GOODS_ID,String.valueOf(mGoodId))
+                    .targetClass(MessageBean.class)
+                    .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
+                            Log.e(TAG, "result=" + result);
+                            if (result != null && result.isSuccess()) {
+                                ivCollect.setImageResource(R.drawable.bg_collect_out);
+                            } else {
+                                ivCollect.setImageResource(R.drawable.bg_collect_in);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Log.e(TAG, "error=" + error);
+                        }
+                    });
+        }
     }
 }
