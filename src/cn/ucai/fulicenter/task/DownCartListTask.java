@@ -6,15 +6,12 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
-import cn.ucai.fulicenter.bean.Result;
-import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -27,7 +24,7 @@ public class DownCartListTask {
     Context mContext;
 
 
-    public DownCartListTask(String username, Context context) {
+    public DownCartListTask(Context context, String username) {
         mContext = context;
         this.username = username;
     }

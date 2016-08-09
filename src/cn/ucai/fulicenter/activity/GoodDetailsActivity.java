@@ -77,9 +77,11 @@ public class GoodDetailsActivity extends BaseActivity {
             getGoodDetailsByGoodId(new OkHttpUtils2.OnCompleteListener<GoodDetailsBean>() {
                 @Override
                 public void onSuccess(GoodDetailsBean result) {
-                    Log.e(TAG, "result=" + result);
+                    Log.e(TAG, "getGoodDetailsByGoodId,result=" + result);
                     if (result != null) {
                         mGoodDetails = result;
+                        Log.e(TAG, "getGoodDetailsByGoodId,mGoodDetails=" + mGoodDetails);
+
                         showGoodDetails();
                     }
                 }
@@ -235,14 +237,15 @@ public class GoodDetailsActivity extends BaseActivity {
                             }
                         });
             } else {
-                OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<>();
+                Log.e(TAG,"detail="+mGoodDetails);
+                OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
                 utils.setRequestUrl(I.REQUEST_ADD_COLLECT)
                         .addParam(I.Collect.USER_NAME,FuLiCenterApplication.getInstance().getUserName())
-                        .addParam(I.Collect.GOODS_ID,String.valueOf(mGoodDetails.getGoodsId()))
-                        .addParam(I.Collect.ADD_TIME,String.valueOf(mGoodDetails.getAddTime()))
+                        .addParam(I.Collect.GOODS_ID, String.valueOf(mGoodDetails.getGoodsId()))
+                        .addParam(I.Collect.ADD_TIME, String.valueOf(mGoodDetails.getAddTime()))
                         .addParam(I.Collect.GOODS_ENGLISH_NAME,mGoodDetails.getGoodsEnglishName())
-                        .addParam(I.Collect.GOODS_IMG,mGoodDetails.getGoodsImg())
                         .addParam(I.Collect.GOODS_THUMB,mGoodDetails.getGoodsThumb())
+                        .addParam(I.Collect.GOODS_IMG,mGoodDetails.getGoodsImg())
                         .addParam(I.Collect.GOODS_NAME,mGoodDetails.getGoodsName())
                         .targetClass(MessageBean.class)
                         .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {

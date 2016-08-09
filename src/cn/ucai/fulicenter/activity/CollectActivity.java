@@ -191,7 +191,7 @@ public class CollectActivity extends BaseActivity{
 
     private void setUpdateCollectListListener() {
         mReceiver = new UpdateCollectListReceiver();
-        IntentFilter filter = new IntentFilter("update_collcet_list");
+        IntentFilter filter = new IntentFilter("update_collect_list");
         registerReceiver(mReceiver, filter);
     }
 
