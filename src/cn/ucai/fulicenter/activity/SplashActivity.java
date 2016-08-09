@@ -20,6 +20,7 @@ import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.UserDao;
+import cn.ucai.fulicenter.task.DownCartListTask;
 import cn.ucai.fulicenter.task.DownCollectCountTask;
 import cn.ucai.fulicenter.task.DownContactListTask;
 import cn.ucai.fulicenter.utils.Utils;
@@ -95,6 +96,7 @@ public class SplashActivity extends BaseActivity {
 					}
 					new DownContactListTask(username,SplashActivity.this).execute();
 					new DownCollectCountTask(username,SplashActivity.this).execute();
+					new DownCartListTask(SplashActivity.this,username).execute();
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
 					if (sleepTime - costTime > 0) {

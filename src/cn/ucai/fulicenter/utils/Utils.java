@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.Pager;
 import cn.ucai.fulicenter.bean.Result;
 
@@ -240,6 +242,15 @@ public class Utils {
     public static int dp2px(Context context,int dp){
         int density = (int) context.getResources().getDisplayMetrics().density;
         return dp*density;
+    }
+
+    public static int sumCartCount() {
+        int count = 0;
+        List<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
+        for (CartBean cart : cartList) {
+            count += cart.getCount();
+        }
+        return count;
     }
 
 }
