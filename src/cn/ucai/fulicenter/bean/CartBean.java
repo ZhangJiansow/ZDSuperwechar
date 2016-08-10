@@ -77,6 +77,22 @@ public class CartBean implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CartBean)) return false;
+
+        CartBean cartBean = (CartBean) o;
+
+        return getId() == cartBean.getId();
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
     public String toString() {
         return "CartBean{" +
                 "id=" + id +
