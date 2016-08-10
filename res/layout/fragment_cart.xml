@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/tv_cart_sum_price"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="合计：¥888.0"
+            android:textColor="@color/google_blue"
+            android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/tv_cart_save_price"
+            android:layout_centerHorizontal="true"
+            android:layout_alignLeft="@+id/tv_cart_sum_price"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_cart_sum_price"
+            android:textColor="@color/google_red"
+            android:textSize="16sp"
+            android:text="节省：¥666.0" />
+        <TextView
+            android:id="@+id/tv_cat_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:text="购买"
+            android:textSize="16sp"
+            android:background="@color/google_red"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_cart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/list_background">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/common_refresh_hint"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_cart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>
