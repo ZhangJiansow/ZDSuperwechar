@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,8 @@ public class CartAdapter extends RecyclerView.Adapter<ViewHolder>{
                     new UpdateCartTask(mContext, cart).execute();
                 }
             });
+            mCartViewHolder.ivCartAdd.setOnClickListener(new ChangeCountListener(cart, 1));
+            mCartViewHolder.ivCartDel.setOnClickListener(new ChangeCountListener(cart, -1));
         }
     }
 
@@ -119,6 +122,24 @@ public class CartAdapter extends RecyclerView.Adapter<ViewHolder>{
             tvCartCount = (TextView) itemView.findViewById(R.id.tv_cart_count);
             ivCartDel = (ImageView) itemView.findViewById(R.id.iv_cart_del);
             tvCartPrice = (TextView) itemView.findViewById(R.id.tv_cart_price);
+        }
+    }
+
+    class ChangeCountListener implements View.OnClickListener {
+
+        CartBean cartBean;
+        int setCount;
+        public ChangeCountListener(CartBean cart,int count) {
+            Log.e("listener", "count=" + cart.getCount() + ",set=" + count);
+            this.cartBean = cart;
+            this.setCount = count;
+        }
+
+        @Override
+        public void onClick(View v) {
+            this.cartBean.setCount(cartBean.getCount()+setCount);
+            Log.e("listener", "count=" + cartBean.getCount());
+            new UpdateCartTask(mContext,cartBean).execute();
         }
     }
 }

@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.ucai.fulicenter.D;
@@ -21,10 +23,12 @@ import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumsBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.task.DownCollectCountTask;
+import cn.ucai.fulicenter.task.UpdateCartTask;
 import cn.ucai.fulicenter.utils.Utils;
 import cn.ucai.fulicenter.view.DisplayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
@@ -73,6 +77,7 @@ public class GoodDetailsActivity extends BaseActivity {
         MyOnClickListener listener = new MyOnClickListener();
         ivCollect.setOnClickListener(listener);
         ivShare.setOnClickListener(listener);
+        ivCart.setOnClickListener(listener);
         setUpdateCartCountListener();
     }
 
@@ -211,8 +216,34 @@ public class GoodDetailsActivity extends BaseActivity {
                 case R.id.iv_good_share:
                     showShare();
                     break;
+                case R.id.iv_good_cart:
+                    addCart();
+                    break;
             }
         }
+    }
+
+    private void addCart() {
+        Log.e(TAG, "addCart.......");
+        List<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
+        CartBean cart = new CartBean();
+        boolean isExits = false;
+        for (CartBean cartBean : cartList) {
+            if (cartBean.getGoodsId() == mGoodId) {
+                cart.setChecked(cartBean.isChecked());
+                cart.setCount(cart.getCount()+1);
+                cart.setGoods(mGoodDetails);
+                cart.setUserName(cartBean.getUserName());
+            }
+        }
+        Log.e(TAG, "addCart.....isExits=" + isExits);
+        if (!isExits) {
+            cart.setChecked(true);
+            cart.setCount(1);
+            cart.setGoods(mGoodDetails);
+            cart.setUserName(FuLiCenterApplication.getInstance().getUserName());
+        }
+        new UpdateCartTask(mContext,cart).execute();
     }
 
     private void goodCollect() {
