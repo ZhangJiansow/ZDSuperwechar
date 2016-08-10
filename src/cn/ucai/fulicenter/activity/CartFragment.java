@@ -134,14 +134,11 @@ public class CartFragment extends Fragment{
                 mAdapter.setMore(false);
             }
             tvNothing.setVisibility(View.GONE);
-            sumPrice();
-            mRecyclerView.setVisibility(View.VISIBLE);
         } else {
             mAdapter.setMore(false);
             tvNothing.setVisibility(View.VISIBLE);
-            sumPrice();
-            mRecyclerView.setVisibility(View.GONE);
         }
+        sumPrice();
     }
 
     private void initView(View layout) {
@@ -164,7 +161,6 @@ public class CartFragment extends Fragment{
         tvBuy = (TextView) layout.findViewById(R.id.tv_cat_buy);
         tvNothing = (TextView) layout.findViewById(R.id.tv_footer);
         tvNothing.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     class UpdateCartReceiver extends BroadcastReceiver {
@@ -178,6 +174,7 @@ public class CartFragment extends Fragment{
     private void setUpdateCartListener() {
         mReceiver = new UpdateCartReceiver();
         IntentFilter filter = new IntentFilter("update_cart_list");
+        filter.addAction("update_user");
         mContext.registerReceiver(mReceiver, filter);
     }
 
