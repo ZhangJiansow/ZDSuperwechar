@@ -1,6 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,12 +19,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.CartAdapter;
 import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -40,10 +45,13 @@ public class CartFragment extends Fragment{
     TextView tvSumPrice;
     TextView tvSavePrice;
     TextView tvBuy;
+    TextView tvNothing;
 
     int pageId = 0;
     int action=I.ACTION_DOWNLOAD;
     TextView tvHint;
+
+    UpdateCartReceiver mReceiver;
 
     @Nullable
     @Override
@@ -52,14 +60,14 @@ public class CartFragment extends Fragment{
         View layout = View.inflate(mContext, R.layout.fragment_cart, null);
         mCartList = new ArrayList<CartBean>();
         initView(layout);
-        initData();
         setListener();
         return layout;
     }
 
     private void setListener() {
-//        setPullDownRefreshListener();
+        setPullDownRefreshListener();
         setPullUpRefreshListener();
+        setUpdateCartListener();
     }
 
     private void setPullUpRefreshListener() {
@@ -125,8 +133,14 @@ public class CartFragment extends Fragment{
             if (mCartList.size() < I.PAGE_SIZE_DEFAULT) {
                 mAdapter.setMore(false);
             }
+            tvNothing.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            sumPrice();
         } else {
             mAdapter.setMore(false);
+            tvNothing.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+            sumPrice();
         }
     }
 
@@ -148,5 +162,60 @@ public class CartFragment extends Fragment{
         tvSumPrice = (TextView) layout.findViewById(R.id.tv_cart_sum_price);
         tvSavePrice = (TextView) layout.findViewById(R.id.tv_cart_save_price);
         tvBuy = (TextView) layout.findViewById(R.id.tv_cat_buy);
+        tvNothing = (TextView) layout.findViewById(R.id.tv_footer);
+        tvNothing.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    class UpdateCartReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            initData();
+        }
+    }
+
+    private void setUpdateCartListener() {
+        mReceiver = new UpdateCartReceiver();
+        IntentFilter filter = new IntentFilter("update_cart_list");
+        mContext.registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null) {
+            mContext.unregisterReceiver(mReceiver);
+        }
+    }
+
+    private void sumPrice() {
+        if (mCartList != null && mCartList.size() > 0) {
+            int sumPrice = 0;
+            int rankPrice = 0;
+            for (CartBean cart : mCartList) {
+                GoodDetailsBean good = cart.getGoods();
+                if (good != null && cart.isChecked()) {
+                    sumPrice += convertPrice(good.getCurrencyPrice())*cart.getCount();
+                    rankPrice += convertPrice(good.getRankPrice())*cart.getCount();
+                }
+            }
+            tvSumPrice.setText("合计：¥" + sumPrice);
+            tvSavePrice.setText("节省：¥" + (sumPrice - rankPrice));
+        } else {
+            tvSumPrice.setText("合计：¥00.0");
+            tvSavePrice.setText("节省：¥00.0");
+        }
+    }
+
+    private int convertPrice(String price) {
+        price = price.substring(price.indexOf("￥") + 1);
+        return Integer.valueOf(price);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
     }
 }
