@@ -162,6 +162,7 @@ public class FuliCenterMainActivity extends BaseActivity{
         }
         setFragment();
         setRadioButtonStatus(currentIndex);
+        updateCartNum();
     }
 
     class updateCartNumReceiver extends BroadcastReceiver {
